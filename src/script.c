@@ -226,7 +226,7 @@ static int HpingSendRawCmd(ClientData clientData, Tcl_Interp *interp,
 	Tcl_Obj *result;
 	struct sockaddr_in sa;
 	char *pkt;
-	int pktlen;
+	long pktlen;
 	struct ars_iphdr *ip;
 
 	if (objc != 3) {
@@ -267,7 +267,7 @@ static int HpingSendRawCmd(ClientData clientData, Tcl_Interp *interp,
 #define APD_MAX_LEN (65536*2+4096)
 char *GetPacketDescription(char *data, int len, int hexdata)
 {
-	unsigned char *p = (char*)data;
+	unsigned char *p = (unsigned char*)data;
 	struct ars_packet pkt;
 	char *d = malloc(APD_MAX_LEN);
 	char *ret;
@@ -605,7 +605,7 @@ static int HpingHasFieldCmd(ClientData clientData, Tcl_Interp *interp,
 static int HpingSetFieldCmd(ClientData clientData, Tcl_Interp *interp,
 		int objc, Tcl_Obj *const objv[])
 {
-	char *layer, *field, *value, *packet;
+	char *layer, *field, *packet;
 	int skip = 0, vstart, vend;
 	Tcl_Obj *result;
 
@@ -616,7 +616,6 @@ static int HpingSetFieldCmd(ClientData clientData, Tcl_Interp *interp,
 	result = Tcl_GetObjResult(interp);
 	layer = Tcl_GetStringFromObj(objv[2], NULL);
 	field = Tcl_GetStringFromObj(objv[3], NULL);
-	value = Tcl_GetStringFromObj(objv[4], NULL);
 	if (objc == 7) {
 		Tcl_GetIntFromObj(interp, objv[5], &skip);
 		packet = Tcl_GetStringFromObj(objv[6], NULL);
@@ -679,7 +678,7 @@ static int HpingChecksumCmd(ClientData clientData, Tcl_Interp *interp,
 	Tcl_Obj *result;
 	u_int16_t cksum;
 	char *data;
-	int len;
+	long len;
 
 	result = Tcl_GetObjResult(interp);
 
@@ -746,7 +745,7 @@ static int HpingEventCmd(ClientData clientData, Tcl_Interp *interp,
 	struct recv_handler *ra;
 	char *ifname;
 	Tcl_Obj *result;
-	int scriptlen;
+	long scriptlen;
 
 	result = Tcl_GetObjResult(interp);
 	if (objc != 3 && objc != 4) {
@@ -975,7 +974,7 @@ struct Tcl_ObjType tclMpzType = {
  * 'val'. If 'val' == NULL, the mpz object is set to zero. */
 void Tcl_SetMpzObj(Tcl_Obj *objPtr, mpz_ptr val)
 {
-	Tcl_ObjType *typePtr;
+	const Tcl_ObjType *typePtr;
 	mpz_ptr mpzPtr;
 
 	/* It's not a good idea to set a shared object... */
@@ -1071,7 +1070,7 @@ int SetMpzFromAny(struct Tcl_Interp* interp, Tcl_Obj *objPtr)
 	char *s;
 	mpz_t t;
 	mpz_ptr mpzPtr;
-	Tcl_ObjType *typePtr;
+	const Tcl_ObjType *typePtr;
 
 	if (objPtr->typePtr == &tclMpzType)
 		return TCL_OK;
@@ -1255,7 +1254,7 @@ static int BigSrandObjCmd(ClientData clientData, Tcl_Interp *interp,
 		int objc, Tcl_Obj *const objv[])
 {
 	char *seed;
-	int len;
+	long len;
 
 	if (objc != 2) {
 		Tcl_WrongNumArgs(interp, 1, objv, "seed-string");

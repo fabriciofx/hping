@@ -482,7 +482,7 @@ u_int16_t ars_multi_cksum(struct mc_context *c, int op, void *vbuf,
 		sum += (sum >> 16);
 		return (u_int16_t) ~sum;
 	} else {
-		assert("else reached in ars_multi_cksum()" == "");
+		assert(0 && "else reached in ars_multi_cksum()");
 	}
 	return 0; /* unreached, here to prevent warnings */
 }
