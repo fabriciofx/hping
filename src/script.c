@@ -47,6 +47,11 @@ struct recv_handler {
 
 struct recv_handler recv_handlers[HPING_IFACE_MAX];
 
+static void panic(const char *msg) {
+    fprintf(stderr, "PANIC: %s\n", msg);
+    exit(1);
+}
+
 /* Recv handlers intialization */
 static void HpingRecvInit(struct recv_handler *ra, int len)
 {
@@ -103,7 +108,7 @@ static struct recv_handler *HpingRecvGetHandler(struct recv_handler *ra, int len
 /* ----------------------------- Sub commands ------------------------------- */
 /* hping resolve hostname */
 static int HpingResolveCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+    int objc, Tcl_Obj *const objv[])
 {
 	struct sockaddr_in saddr;
 	char *hostname;
@@ -157,7 +162,7 @@ static int rawsocket = -1;
 
 /* hping send ?-nocompile? pktdescr */
 static int HpingSendCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	struct ars_packet p;
 	int nocompile = 0;
@@ -215,7 +220,7 @@ static int HpingSendCmd(ClientData clientData, Tcl_Interp *interp,
 
 /* hping sendraw pktdata */
 static int HpingSendRawCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	int error;
 	Tcl_Obj *result;
@@ -383,7 +388,7 @@ static int HpingRecvPackets(struct recv_handler *ra, Tcl_Interp *interp, Tcl_Obj
  *
  * For default timeout is -1, maxpackets is 0 */
 static int __HpingRecvCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[], int rapd, int hexdata)
+		int objc, Tcl_Obj *const objv[], int rapd, int hexdata)
 {
 	Tcl_Obj *result;
 	struct recv_handler *ra;
@@ -416,13 +421,13 @@ static int __HpingRecvCmd(ClientData clientData, Tcl_Interp *interp,
 
 /* The two wrappers for the __HpingRecvRawCmd() */
 static int HpingRecvRawCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	return __HpingRecvCmd(clientData, interp, objc, objv, 0, 0);
 }
 
 static int HpingRecvCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	char *firstarg;
 	int hexdata = 0;
@@ -440,7 +445,7 @@ static int HpingRecvCmd(ClientData clientData, Tcl_Interp *interp,
 
 /* hping getinterfaces */
 static int HpingGetInterfacesCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	struct hpingif ifaces[HPING_IFACE_MAX];
 	int found, i;
@@ -513,7 +518,7 @@ static int HpingGetInterfacesCmd(ClientData clientData, Tcl_Interp *interp,
 
 /* hping outifaddr destaddr */
 static int HpingGetOutIfAddrCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	struct sockaddr_in dest, ifaddr;
 	Tcl_Obj *result;
@@ -541,7 +546,7 @@ static int HpingGetOutIfAddrCmd(ClientData clientData, Tcl_Interp *interp,
 
 /* hping getfield layer field ?skip? packet */
 static int HpingGetFieldCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	char *layer, *field, *value, *packet;
 	int skip = 0;
@@ -570,7 +575,7 @@ static int HpingGetFieldCmd(ClientData clientData, Tcl_Interp *interp,
 
 /* hping hasfield layer field ?skip? packet */
 static int HpingHasFieldCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	char *layer, *field, *packet;
 	int skip = 0;
@@ -598,7 +603,7 @@ static int HpingHasFieldCmd(ClientData clientData, Tcl_Interp *interp,
 
 /* hping setfield layer field value ?skip? packet */
 static int HpingSetFieldCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	char *layer, *field, *value, *packet;
 	int skip = 0, vstart, vend;
@@ -630,7 +635,7 @@ static int HpingSetFieldCmd(ClientData clientData, Tcl_Interp *interp,
 
 /* hping delfield layer field ?skip? packet */
 static int HpingDelFieldCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	char *layer, *field, *packet;
 	int skip = 0, fstart, vend;
@@ -669,7 +674,7 @@ static int HpingDelFieldCmd(ClientData clientData, Tcl_Interp *interp,
 
 /* hping checksum string */
 static int HpingChecksumCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	Tcl_Obj *result;
 	u_int16_t cksum;
@@ -690,7 +695,7 @@ static int HpingChecksumCmd(ClientData clientData, Tcl_Interp *interp,
 
 /* hping setfilter ifname filter */
 static int HpingSetFilterCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	struct recv_handler *ra;
 	struct bpf_program bpfp;
@@ -736,7 +741,7 @@ void HpingEventHandler(void *clientData, int mask)
 
 /* hping event ifname ?script? */
 static int HpingEventCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	struct recv_handler *ra;
 	char *ifname;
@@ -784,7 +789,7 @@ static int HpingEventCmd(ClientData clientData, Tcl_Interp *interp,
 #if 0
 /* hping setfilter ifname filter */
 static int HpingSoftrealtimeCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	struct sched_param sp;
 	int min, max, virtual_priority;
@@ -817,7 +822,7 @@ static int HpingSoftrealtimeCmd(ClientData clientData, Tcl_Interp *interp,
 /* ---------------------- hping command implementation ---------------------- */
 struct subcmd {
 	char *name;
-	int (*proc)(ClientData cd, Tcl_Interp *i, int, Tcl_Obj *CONST objv[]);
+	int (*proc)(ClientData cd, Tcl_Interp *i, int, Tcl_Obj *const objv[]);
 } subcmds[] = {
 	{ "resolve", HpingResolveCmd },
 	{ "send", HpingSendCmd },
@@ -840,7 +845,7 @@ struct subcmd {
 };
 
 static int HpingObjCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	int i = 0;
 	char *scmd;
@@ -881,7 +886,7 @@ static int HpingObjCmd(ClientData clientData, Tcl_Interp *interp,
  * time to improve on this in the future if needed, without to break the API. */
 
 static int BigBasicObjCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	Tcl_Obj *result;
 	mpz_t res, t;
@@ -1101,7 +1106,7 @@ int SetMpzFromAny(struct Tcl_Interp* interp, Tcl_Obj *objPtr)
 /* --------------- the actual commands for multipreicision math ------------- */
 
 static int BigBasicObjCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	Tcl_Obj *result;
 	mpz_t res;
@@ -1169,7 +1174,7 @@ oom:
 }
 
 static int BigCmpObjCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	Tcl_Obj *result;
 	mpz_ptr a, b;
@@ -1222,7 +1227,7 @@ static int BigCmpObjCmd(ClientData clientData, Tcl_Interp *interp,
 }
 
 static int BigRandObjCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	Tcl_Obj *result;
 	int len = 1;
@@ -1247,7 +1252,7 @@ static int BigRandObjCmd(ClientData clientData, Tcl_Interp *interp,
 }
 
 static int BigSrandObjCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	char *seed;
 	int len;
@@ -1262,7 +1267,7 @@ static int BigSrandObjCmd(ClientData clientData, Tcl_Interp *interp,
 }
 
 static int BigPowObjCmd(ClientData clientData, Tcl_Interp *interp,
-		int objc, Tcl_Obj *CONST objv[])
+		int objc, Tcl_Obj *const objv[])
 {
 	Tcl_Obj *result;
 	int mpzerr;
