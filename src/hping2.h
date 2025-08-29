@@ -1,12 +1,12 @@
-/* 
- * $smu-mark$ 
- * $name: hping2.h$ 
- * $author: Salvatore Sanfilippo <antirez@invece.org>$ 
- * $copyright: Copyright (C) 1999 by Salvatore Sanfilippo$ 
- * $license: This software is under GPL version 2 of license$ 
- * $date: Fri Nov  5 11:55:48 MET 1999$ 
- * $rev: 9$ 
- */ 
+/*
+ * $smu-mark$
+ * $name: hping2.h$
+ * $author: Salvatore Sanfilippo <antirez@invece.org>$
+ * $copyright: Copyright (C) 1999 by Salvatore Sanfilippo$
+ * $license: This software is under GPL version 2 of license$
+ * $date: Fri Nov  5 11:55:48 MET 1999$
+ * $rev: 9$
+ */
 
 /* $Id: hping2.h,v 1.4 2004/06/04 07:22:38 antirez Exp $ */
 
@@ -17,7 +17,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <limits.h>
-#include "byteorder.h"
 #include "systype.h"
 #include "fixtypes.h"
 
@@ -99,7 +98,7 @@
 /* packet size (physical header size + ip header + tcp header + 0 data bytes) */
 #ifndef IP_MAX_SIZE
 #define IP_MAX_SIZE	65535
-#endif 
+#endif
 
 /* absolute offsets */
 #define ABS_OFFSETIP	linkhdr_size
@@ -135,7 +134,7 @@
 #define DEFAULT_CS_WINDOW   300
 #define DEFAULT_CS_WINDOW_SHIFT 5
 #define DEFAULT_CS_VECTOR_LEN   10
-	
+
 /* fragmentation defines */
 #define MF ((unsigned short)0x2000)	/* more fragments */
 #define DF ((unsigned short)0x4000)	/* dont fragment */
@@ -252,14 +251,12 @@
  * IP header
  */
 struct myiphdr {
-#if defined(__LITTLE_ENDIAN_BITFIELD)
-        __u8    ihl:4,
-                version:4;
-#elif defined (__BIG_ENDIAN_BITFIELD)
+#if defined (__BIG_ENDIAN_BITFIELD)
         __u8    version:4,
                 ihl:4;
 #else
-#error  "Please, edit Makefile and add -D__(LITTLE|BIG)_ENDIAN_BITFIEND"
+        __u8    ihl:4,
+                version:4;
 #endif
         __u8    tos;
         __u16   tot_len;
@@ -275,7 +272,7 @@ struct myiphdr {
 /*
  * UDP header
  */
-struct myudphdr { 
+struct myudphdr {
 	__u16 uh_sport;     /* source port */
 	__u16 uh_dport;     /* destination port */
 	__u16 uh_ulen;      /* udp length */
@@ -291,14 +288,12 @@ struct mytcphdr {
 	__u16	th_dport;               /* destination port */
 	__u32	th_seq;                 /* sequence number */
 	__u32	th_ack;                 /* acknowledgement number */
-#if defined (__LITTLE_ENDIAN_BITFIELD)
-	__u8    th_x2:4,                /* (unused) */
-		th_off:4;               /* data offset */
-#elif defined (__BIG_ENDIAN_BITFIELD)
+#if defined (__BIG_ENDIAN_BITFIELD)
 	__u8    th_off:4,               /* data offset */
-		th_x2:4;                /* (unused) */
+		th_x2:4;                    /* (unused) */
 #else
-#error  "Please, edit Makefile and add -D__(LITTLE|BIG)_ENDIAN_BITFIEND"
+	__u8    th_x2:4,                /* (unused) */
+		th_off:4;                   /* data offset */
 #endif
 	__u8    th_flags;
 	__u16   th_win;                 /* window */

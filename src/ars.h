@@ -17,7 +17,6 @@
 #include <errno.h>
 #include "systype.h"
 #include "in.h"
-#include "byteorder.h"
 #include "adbuf.h"
 #include "fixtypes.h"
 
@@ -180,14 +179,12 @@
 
 /* The IP header structure */
 struct ars_iphdr {
-#if defined(__LITTLE_ENDIAN_BITFIELD)
-        __u8    ihl:4,
-                version:4;
-#elif defined (__BIG_ENDIAN_BITFIELD)
+#if defined (__BIG_ENDIAN_BITFIELD)
         __u8    version:4,
                 ihl:4;
 #else
-#error  "Please, edit Makefile and add -DBYTE_ORDER_(BIG|LITTLE)_ENDIAN"
+        __u8    ihl:4,
+                version:4;
 #endif
         __u8    tos;
         __u16   tot_len;
@@ -231,7 +228,7 @@ struct ars_ipopt {
 };
 
 /* The UDP header structure */
-struct ars_udphdr { 
+struct ars_udphdr {
 	__u16 uh_sport;     /* source port */
 	__u16 uh_dport;     /* destination port */
 	__u16 uh_ulen;      /* udp length */
@@ -244,14 +241,12 @@ struct ars_tcphdr {
 	__u16	th_dport;               /* destination port */
 	__u32	th_seq;                 /* sequence number */
 	__u32	th_ack;                 /* acknowledgement number */
-#if defined (__LITTLE_ENDIAN_BITFIELD)
-	__u8    th_x2:4,                /* (unused) */
-		th_off:4;               /* data offset */
-#elif defined (__BIG_ENDIAN_BITFIELD)
+#if defined (__BIG_ENDIAN_BITFIELD)
 	__u8    th_off:4,               /* data offset */
-		th_x2:4;                /* (unused) */
+		th_x2:4;                    /* (unused) */
 #else
-#error  "Please, edit Makefile and add -DBYTE_ORDER_(BIG|LITTLE)_ENDIAN"
+	__u8    th_x2:4,                /* (unused) */
+		th_off:4;                   /* data offset */
 #endif
 	__u8    th_flags;
 	__u16   th_win;                 /* window */
@@ -313,14 +308,12 @@ struct ars_pseudohdr
 
 /* The IGRP header structure */
 struct ars_igrphdr {
-#if defined(__LITTLE_ENDIAN_BITFIELD)
-        __u8    opcode:4,
-                version:4;
-#elif defined (__BIG_ENDIAN_BITFIELD)
+#if defined (__BIG_ENDIAN_BITFIELD)
         __u8    version:4,
                 opcode:4;
 #else
-#error  "Please, edit Makefile and add -DBYTE_ORDER_(BIG|LITTLE)_ENDIAN"
+        __u8    opcode:4,
+                version:4;
 #endif
 	__u8	edition;
 	__u16	autosys;

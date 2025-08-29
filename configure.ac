@@ -6,6 +6,9 @@ AC_CONFIG_MACRO_DIRS([m4])
 AC_PROG_CC
 LT_INIT
 
+# To detect endianess
+AC_C_BIGENDIAN([__BIG_ENDIAN_BITFIELD])
+
 # --- Detectar Homebrew e ajustar PKG_CONFIG_PATH ---
 AC_MSG_NOTICE([Detecting Homebrew pkg-config paths...])
 case "`uname -m`" in

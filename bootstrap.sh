@@ -11,25 +11,7 @@ clean() {
     echo "done."
 }
 
-byteorder() {
-    echo -n "Creating src/byteorder.h file... "
-    make byteorder > /dev/null
-    BYTEORDER=$(./byteorder m)
-    cat > src/byteorder.h <<EOF
-#ifndef __BYTEORDER_H
-#define __BYTEORDER_H
-EOF
-    echo "#ifndef $BYTEORDER" >> src/byteorder.h
-    echo "#define $BYTEORDER" >> src/byteorder.h
-    echo "#endif /* $BYTEORDER */" >> src/byteorder.h
-cat >> src/byteorder.h <<EOF
-#endif /* __BYTEORDER_H */
-EOF
-    echo "done."
-}
-
 build() {
-    byteorder
     echo "Creating configure and support files... "
     # Create libtool files
     glibtoolize --force
