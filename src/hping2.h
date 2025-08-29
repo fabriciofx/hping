@@ -17,7 +17,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <limits.h>
-#include "systype.h"
+#include "config.h"
 #include "fixtypes.h"
 
 /* types */
@@ -251,7 +251,7 @@
  * IP header
  */
 struct myiphdr {
-#if defined (__BIG_ENDIAN_BITFIELD)
+#if defined (WORDS_BIGENDIAN)
         __u8    version:4,
                 ihl:4;
 #else
@@ -288,7 +288,7 @@ struct mytcphdr {
 	__u16	th_dport;               /* destination port */
 	__u32	th_seq;                 /* sequence number */
 	__u32	th_ack;                 /* acknowledgement number */
-#if defined (__BIG_ENDIAN_BITFIELD)
+#if defined (WORDS_BIGENDIAN)
 	__u8    th_off:4,               /* data offset */
 		th_x2:4;                    /* (unused) */
 #else

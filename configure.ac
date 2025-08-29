@@ -7,9 +7,37 @@ AC_PROG_CC
 LT_INIT
 
 # To detect endianess
-AC_C_BIGENDIAN([__BIG_ENDIAN_BITFIELD])
+AC_C_BIGENDIAN([WORDS_BIGENDIAN])
 
-# --- Detectar Homebrew e ajustar PKG_CONFIG_PATH ---
+# Create config.h
+AC_CONFIG_HEADERS([config.h])
+
+AC_CANONICAL_HOST
+
+case "$host_os" in
+  linux*)
+    AC_DEFINE([OSTYPE_LINUX], [], [Define Linux as the target OS type])
+    ;;
+  darwin*)
+    AC_DEFINE([OSTYPE_DARWIN], [], [Define Darwin as the target OS type])
+    ;;
+  freebsd*)
+    AC_DEFINE([OSTYPE_FREEBSD], [], [Define FreeBSD as the target OS type])
+    ;;
+  netbsd*)
+    AC_DEFINE([OSTYPE_NETBSD], [], [Define NetBSD as the target OS type])
+    ;;
+  openbsd*)
+    AC_DEFINE([OSTYPE_OPENBSD], [], [Define OpenBSD as the target OS type])
+    ;;
+  bsdi*)
+    AC_DEFINE([OSTYPE_BSDI], [], [Define BSDI as the target OS type])
+    ;;
+  *)
+    os_type=UNKNOWN
+    ;;
+esac
+
 AC_MSG_NOTICE([Detecting Homebrew pkg-config paths...])
 case "`uname -m`" in
   x86_64)
@@ -29,12 +57,10 @@ if test -d "$BREW_PKGCONFIG"; then
   AC_MSG_NOTICE([PKG_CONFIG_PATH set to $PKG_CONFIG_PATH])
 fi
 
-# --- Detectar libpcap >=1.0 ---
 PKG_CHECK_MODULES([PCAP], [libpcap >= 1.0],
   [AC_MSG_NOTICE([Found libpcap: $PCAP_CFLAGS $PCAP_LIBS])],
   [AC_MSG_ERROR([libpcap >= 1.0 not found. Install it via Homebrew.])])
 
-# --- Detectar Tcl >= 8.6 ---
 PKG_CHECK_MODULES([TCL], [tcl >= 8.6],
   [AC_MSG_NOTICE([Found Tcl: $TCL_CFLAGS $TCL_LIBS])],
   [AC_MSG_ERROR([Tcl >= 8.6 not found. Install it via Homebrew.])])
