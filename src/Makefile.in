@@ -14,6 +14,7 @@
 
 @SET_MAKE@
 
+
 VPATH = @srcdir@
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
@@ -93,10 +94,7 @@ host_triplet = @host@
 bin_PROGRAMS = hping3$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
@@ -106,28 +104,39 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_hping3_OBJECTS = adbuf.$(OBJEXT) antigetopt.$(OBJEXT) apd.$(OBJEXT) \
-	apdutils.$(OBJEXT) ars.$(OBJEXT) arsglue.$(OBJEXT) \
-	binding.$(OBJEXT) cksum.$(OBJEXT) datafiller.$(OBJEXT) \
-	datahandler.$(OBJEXT) display_ipopt.$(OBJEXT) \
-	gethostname.$(OBJEXT) getifname.$(OBJEXT) getlhs.$(OBJEXT) \
-	getusec.$(OBJEXT) hex.$(OBJEXT) hstring.$(OBJEXT) \
-	if_promisc.$(OBJEXT) interface.$(OBJEXT) \
-	ip_opt_build.$(OBJEXT) libpcap_stuff.$(OBJEXT) \
-	listen.$(OBJEXT) logicmp.$(OBJEXT) main.$(OBJEXT) \
-	memlock.$(OBJEXT) memlockall.$(OBJEXT) memstr.$(OBJEXT) \
-	memunlock.$(OBJEXT) memunlockall.$(OBJEXT) \
+LIBRARIES = $(noinst_LIBRARIES)
+ARFLAGS = cr
+AM_V_AR = $(am__v_AR_@AM_V@)
+am__v_AR_ = $(am__v_AR_@AM_DEFAULT_V@)
+am__v_AR_0 = @echo "  AR      " $@;
+am__v_AR_1 = 
+libars_a_AR = $(AR) $(ARFLAGS)
+libars_a_RANLIB = $(RANLIB)
+libars_a_LIBADD =
+am_libars_a_OBJECTS = ars.$(OBJEXT) apd.$(OBJEXT) split.$(OBJEXT) \
+	rapd.$(OBJEXT)
+libars_a_OBJECTS = $(am_libars_a_OBJECTS)
+am_hping3_OBJECTS = adbuf.$(OBJEXT) antigetopt.$(OBJEXT) \
+	apdutils.$(OBJEXT) arsglue.$(OBJEXT) binding.$(OBJEXT) \
+	cksum.$(OBJEXT) datafiller.$(OBJEXT) datahandler.$(OBJEXT) \
+	display_ipopt.$(OBJEXT) gethostname.$(OBJEXT) \
+	getifname.$(OBJEXT) getlhs.$(OBJEXT) getusec.$(OBJEXT) \
+	hex.$(OBJEXT) hstring.$(OBJEXT) if_promisc.$(OBJEXT) \
+	interface.$(OBJEXT) ip_opt_build.$(OBJEXT) \
+	libpcap_stuff.$(OBJEXT) listen.$(OBJEXT) logicmp.$(OBJEXT) \
+	main.$(OBJEXT) memlock.$(OBJEXT) memlockall.$(OBJEXT) \
+	memstr.$(OBJEXT) memunlock.$(OBJEXT) memunlockall.$(OBJEXT) \
 	opensockraw.$(OBJEXT) parseoptions.$(OBJEXT) random.$(OBJEXT) \
-	rapd.$(OBJEXT) relid.$(OBJEXT) resolve.$(OBJEXT) rtt.$(OBJEXT) \
+	relid.$(OBJEXT) resolve.$(OBJEXT) rtt.$(OBJEXT) \
 	sbignum-tables.$(OBJEXT) sbignum.$(OBJEXT) scan.$(OBJEXT) \
 	script.$(OBJEXT) send.$(OBJEXT) sendhcmp.$(OBJEXT) \
 	sendicmp.$(OBJEXT) sendip_handler.$(OBJEXT) sendip.$(OBJEXT) \
 	sendrawip.$(OBJEXT) sendtcp.$(OBJEXT) sendudp.$(OBJEXT) \
-	signal.$(OBJEXT) sockopt.$(OBJEXT) split.$(OBJEXT) \
-	statistics.$(OBJEXT) strlcpy.$(OBJEXT) usage.$(OBJEXT) \
-	version.$(OBJEXT) waitpacket.$(OBJEXT)
+	signal.$(OBJEXT) sockopt.$(OBJEXT) statistics.$(OBJEXT) \
+	strlcpy.$(OBJEXT) usage.$(OBJEXT) version.$(OBJEXT) \
+	waitpacket.$(OBJEXT)
 hping3_OBJECTS = $(am_hping3_OBJECTS)
-hping3_DEPENDENCIES =
+hping3_DEPENDENCIES = libars.a
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -193,8 +202,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(hping3_SOURCES)
-DIST_SOURCES = $(hping3_SOURCES)
+SOURCES = $(libars_a_SOURCES) $(hping3_SOURCES)
+DIST_SOURCES = $(libars_a_SOURCES) $(hping3_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -347,22 +356,24 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+noinst_LIBRARIES = libars.a
+libars_a_SOURCES = ars.c apd.c split.c rapd.c
 
 # Source files
-hping3_SOURCES = adbuf.c antigetopt.c apd.c apdutils.c ars.c arsglue.c \
+hping3_SOURCES = adbuf.c antigetopt.c apdutils.c arsglue.c \
 	binding.c cksum.c datafiller.c datahandler.c display_ipopt.c gethostname.c \
 	getifname.c getlhs.c getusec.c hex.c hstring.c if_promisc.c interface.c \
 	ip_opt_build.c libpcap_stuff.c listen.c logicmp.c main.c memlock.c \
 	memlockall.c memstr.c memunlock.c memunlockall.c opensockraw.c \
-	parseoptions.c random.c rapd.c relid.c resolve.c rtt.c sbignum-tables.c \
+	parseoptions.c random.c relid.c resolve.c rtt.c sbignum-tables.c \
 	sbignum.c scan.c script.c send.c sendhcmp.c sendicmp.c sendip_handler.c \
-	sendip.c sendrawip.c sendtcp.c sendudp.c signal.c sockopt.c split.c \
+	sendip.c sendrawip.c sendtcp.c sendudp.c signal.c sockopt.c \
 	statistics.c strlcpy.c usage.c version.c waitpacket.c
 
 
 # Flags
 AM_CFLAGS = @PCAP_CFLAGS@ @TCL_CFLAGS@
-hping3_LDADD = @PCAP_LIBS@ @TCL_LIBS@
+hping3_LDADD = libars.a @PCAP_LIBS@ @TCL_LIBS@
 all: all-am
 
 .SUFFIXES:
@@ -440,6 +451,14 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	$(am__rm_f) $(bin_PROGRAMS)
 	test -z "$(EXEEXT)" || $(am__rm_f) $(bin_PROGRAMS:$(EXEEXT)=)
+
+clean-noinstLIBRARIES:
+	-$(am__rm_f) $(noinst_LIBRARIES)
+
+libars.a: $(libars_a_OBJECTS) $(libars_a_DEPENDENCIES) $(EXTRA_libars_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libars.a
+	$(AM_V_AR)$(libars_a_AR) libars.a $(libars_a_OBJECTS) $(libars_a_LIBADD)
+	$(AM_V_at)$(libars_a_RANLIB) libars.a
 
 hping3$(EXEEXT): $(hping3_OBJECTS) $(hping3_DEPENDENCIES) $(EXTRA_hping3_DEPENDENCIES) 
 	@rm -f hping3$(EXEEXT)
@@ -631,7 +650,7 @@ distdir-am: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS)
+all-am: Makefile $(PROGRAMS) $(LIBRARIES)
 installdirs:
 	for dir in "$(DESTDIR)$(bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
@@ -669,7 +688,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic clean-libtool clean-local \
-	mostlyclean-am
+	clean-noinstLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 	-rm -f ./$(DEPDIR)/adbuf.Po
@@ -851,23 +870,22 @@ uninstall-am: uninstall-binPROGRAMS
 
 .PHONY: CTAGS GTAGS TAGS all all-am am--depfiles check check-am clean \
 	clean-binPROGRAMS clean-generic clean-libtool clean-local \
-	cscopelist-am ctags ctags-am distclean distclean-compile \
-	distclean-generic distclean-libtool distclean-tags distdir dvi \
-	dvi-am html html-am info info-am install install-am \
-	install-binPROGRAMS install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags tags-am uninstall uninstall-am \
-	uninstall-binPROGRAMS
+	clean-noinstLIBRARIES cscopelist-am ctags ctags-am distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am html html-am info info-am \
+	install install-am install-binPROGRAMS install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags tags-am uninstall uninstall-am uninstall-binPROGRAMS
 
 .PRECIOUS: Makefile
 
 
-# Regras automáticas de dependência
 depend:
 	@echo "Making dependences..."
 	@$(CC) $(AM_CFLAGS) -MM $(hping3_SOURCES) > .depend || true

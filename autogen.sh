@@ -13,18 +13,18 @@ fi
 clean() {
     echo -n "Cleaning created files... "
     rm -rf autom4te.cache aclocal.m4 Makefile.in src/Makefile.in m4/* \
-        src/.deps src/.libs configure config.status compile config.guess \
-        config.sub depcomp install-sh ltmain.sh missing config.log libtool \
-        Makefile src/Makefile src/*.o src/.depend .depend config.h.in* \
-        config.h stamp-h1 src/hping3
+        src/.deps src/.libs configure configure~ config.status compile \
+        config.guess config.sub depcomp install-sh ltmain.sh missing \
+        config.log libtool Makefile src/Makefile src/*.o src/.depend .depend \
+        config.h.in* config.h stamp-h1 src/hping3 src/libars.a ar-lib
     echo "done."
 }
 
 dist() {
     echo -n "Cleaning temporary files... "
     rm -rf autom4te.cache aclocal.m4 m4/* src/.deps src/.libs config.status \
-        depcomp config.log libtool Makefile src/Makefile src/*.o src/.depend \
-        .depend config.h.in* config.h stamp-h1 src/hping3
+        config.log libtool Makefile src/Makefile src/*.o src/.depend .depend \
+        config.h.in~ configure~ config.h stamp-h1 src/hping3 src/libars.a
     echo "done."
 }
 
