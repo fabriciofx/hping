@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright (C) 2025 Fabrício Barros Cabral
+# SPDX-License-Identifier: MIT
+---
+name: c-cpp-build-macos
+'on':
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  c-cpp-build-macos:
+    runs-on: macos-15
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Install dependencies
+        run: |
+          brew update
+          brew install pkg-config tcl-tk libpcap
+      - name: Configure and build
+        run: |
+          ./configure
+          make
