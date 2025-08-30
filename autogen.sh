@@ -13,16 +13,15 @@ fi
 clean() {
     echo -n "Cleaning created files... "
     rm -rf autom4te.cache aclocal.m4 Makefile.in src/Makefile.in m4/* \
-        src/.deps src/.libs configure configure~ config.status compile \
-        config.guess config.sub depcomp install-sh ltmain.sh missing \
+        src/.deps src/.libs configure configure~ config.status \
         config.log libtool Makefile src/Makefile src/*.o src/.depend .depend \
-        config.h.in* config.h stamp-h1 src/hping3 src/libars.a ar-lib
+        config.h.in* config.h stamp-h1 src/hping3 src/libars.a build
     echo "done."
 }
 
 dist() {
     echo -n "Cleaning temporary files... "
-    rm -rf autom4te.cache aclocal.m4 m4/* src/.deps src/.libs config.status \
+    rm -rf autom4te.cache aclocal.m4 src/.deps src/.libs config.status \
         config.log libtool Makefile src/Makefile src/*.o src/.depend .depend \
         config.h.in~ configure~ config.h stamp-h1 src/hping3 src/libars.a
     echo "done."
@@ -56,5 +55,6 @@ case "$1" in
     *)
         clean
         build
+        dist
         ;;
 esac

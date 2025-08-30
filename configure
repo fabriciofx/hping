@@ -2429,7 +2429,7 @@ as_fn_append ac_header_c_list " unistd.h unistd_h HAVE_UNISTD_H"
 ac_aux_files="config.guess config.sub ltmain.sh ar-lib compile missing install-sh"
 
 # Locations in which to look for auxiliary files.
-ac_aux_dir_candidates="${srcdir}${PATH_SEPARATOR}${srcdir}/..${PATH_SEPARATOR}${srcdir}/../.."
+ac_aux_dir_candidates="${srcdir}/build"
 
 # Search for a directory containing all of the required auxiliary files,
 # $ac_aux_files, from the $PATH-style list $ac_aux_dir_candidates.
@@ -2590,6 +2590,8 @@ ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
 
 
 am__api_version='1.18'
@@ -3478,7 +3480,6 @@ fi
 if test -z "$CSCOPE"; then
   CSCOPE=cscope
 fi
-
 
 
 
@@ -9404,6 +9405,10 @@ _lt_linker_boilerplate=`cat conftest.err`
 $RM -r conftest*
 
 
+## CAVEAT EMPTOR:
+## There is no encapsulation within the following macros, do not change
+## the running order or otherwise move them around unless you know exactly
+## what you are doing...
 if test -n "$compiler"; then
 
 lt_prog_compiler_no_builtin_flag=
