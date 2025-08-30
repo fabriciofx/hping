@@ -26,3 +26,4 @@ jobs:
           ./configure
           make
           make dist
+          make binary-dist
