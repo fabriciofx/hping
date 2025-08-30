@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright (C) 2025 Fabrício Barros Cabral
+# SPDX-License-Identifier: MIT
+---
+name: c-cpp-release
+'on':
+  workflow_run:
+    workflows: ["c-cpp-build-linux"]
+    types:
+      - completed
+jobs:
+  c-cpp-release:
+    runs-on: ubuntu-24.04
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist/
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
