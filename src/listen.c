@@ -1,12 +1,12 @@
-/* 
- * $smu-mark$ 
- * $name: listen.c$ 
- * $author: Salvatore Sanfilippo <antirez@invece.org>$ 
- * $copyright: Copyright (C) 1999 by Salvatore Sanfilippo$ 
- * $license: This software is under GPL version 2 of license$ 
- * $date: Fri Nov  5 11:55:48 MET 1999$ 
- * $rev: 8$ 
- */ 
+/*
+ * $smu-mark$
+ * $name: listen.c$
+ * $author: Salvatore Sanfilippo <antirez@invece.org>$
+ * $copyright: Copyright (C) 1999 by Salvatore Sanfilippo$
+ * $license: This software is under GPL version 2 of license$
+ * $date: Fri Nov  5 11:55:48 MET 1999$
+ * $rev: 8$
+ */
 
 /* $Id: listen.c,v 1.2 2003/09/01 00:22:06 antirez Exp $ */
 
@@ -41,7 +41,7 @@ void listenmain(void)
 		case -1:
 			exit(1);
 		}
-	
+
 		/* Skip truncated packets */
 		if (size < linkhdr_size+IPHDR_SIZE)
 			continue;
@@ -74,7 +74,16 @@ void listenmain(void)
 			}
 
 			p+=strlen(sign);
-			write(stdoutFD, p, size-(p-ip_packet));
+			const size_t len = size-(p-ip_packet);
+			const ssize_t n = write(stdoutFD, p, len);
+			if (n != len) {
+				fprintf(
+					stderr,
+					"write() did not write %zu bytes as expected.",
+					len
+				);
+				exit(1);
+			}
 		}
 	}
 }

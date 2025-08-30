@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "fixtypes.h"
 
 u_int32_t hp_rand(void);
@@ -29,7 +31,11 @@ static void hp_rand_init(void)
 	/* Strong sbox initialization */
 	fd = open("/dev/urandom", O_RDONLY);
 	if (fd != -1) {
-		read(fd, rc4_sbox, 256);
+		const ssize_t n = read(fd, rc4_sbox, 256);
+		if (n != 256) {
+			fprintf(stderr, "read() did not read 256 bytes as expected.");
+			exit(1);
+		}
 		close(fd);
 	}
 	/* Weaker sbox initialization */
@@ -81,4 +87,3 @@ u_int32_t hp_rand(void)
 	}
 	return r;
 }
-
