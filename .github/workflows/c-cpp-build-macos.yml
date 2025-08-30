@@ -11,7 +11,7 @@ name: c-cpp-build-macos
       - master
 jobs:
   c-cpp-build-macos:
-    runs-on: macos-15
+    runs-on: [self-hosted, macos-15]
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -25,7 +25,34 @@ jobs:
           ./autogen.sh
           ./configure
           make
-      - name: Make source and binary packages
+      - name: Get name from configure.ac
+        id: get_name
+        shell: bash
+        run: |
+          name=$(grep AC_INIT configure.ac | sed -n 's/AC_INIT(\[\([^]]*\)\],.*/\1/p')
+          echo "name=$name" >> $GITHUB_OUTPUT
+      - name: Get version from configure.ac
+        id: get_version
+        shell: bash
+        run: |
+          version=$(grep AC_INIT configure.ac | sed -n 's/AC_INIT(\[[^]]*\], \[\([^]]*\)\], \[[^]]*\])/\1/p')
+          echo "version=$version" >> $GITHUB_OUTPUT
+      - name: Create source package
         run: |
           make dist
+      - name: Create binary package
+        run: |
           make binary-dist
+      - name: Prepare packages to distributuion
+        run: |
+          mkdir -p dist
+          mv ${{ steps.get_name.outputs.name }}-${{ steps.get_version.outputs.version }}.tar.gz \
+            dist/${{ steps.get_name.outputs.name }}-${{ steps.get_version.outputs.version }}-source.tar.gz
+          mv ${{ steps.get_name.outputs.name }}-${{ steps.get_version.outputs.version }}-bin.tar.gz \
+            dist/${{ steps.get_name.outputs.name }}-${{ steps.get_version.outputs.version }}-macos.tar.gz
+      - name: Upload artifacts
+        if: ${{ !env.ACT }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/*
