@@ -25,5 +25,7 @@ jobs:
           ./autogen.sh
           ./configure
           make
+      - name: Make source and binary packages
+        run: |
           make dist
           make binary-dist
