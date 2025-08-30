@@ -20,12 +20,20 @@ hping3_SOURCES = adbuf.c antigetopt.c apdutils.c arsglue.c \
 AM_CFLAGS = @PCAP_CFLAGS@ @TCL_CFLAGS@
 hping3_LDADD = libars.a @PCAP_LIBS@ @TCL_LIBS@
 
+.PHONY: depend clean-local install-bin-local
+
 depend:
 	@echo "Making dependences..."
 	@$(CC) $(AM_CFLAGS) -MM $(hping3_SOURCES) > .depend || true
 
 -include .depend
 
-# Limpeza
 clean-local:
 	rm -rf hping3
+
+BIN_DISTDIR = $(PACKAGE_NAME)-$(PACKAGE_VERSION)
+
+install-bin-local:
+	@ABS_DISTDIR=$$(pwd)/../$(BIN_DISTDIR); \
+	echo "Installing binary files in $$ABS_DISTDIR..."; \
+	$(MAKE) install DESTDIR=$$ABS_DISTDIR;

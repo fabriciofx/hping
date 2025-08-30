@@ -8,6 +8,10 @@ AC_PROG_CC
 AM_PROG_AR
 LT_INIT
 
+# Export this info to Makefile
+AC_SUBST([PACKAGE_NAME])
+AC_SUBST([PACKAGE_VERSION])
+
 # To detect endianess
 AC_C_BIGENDIAN([WORDS_BIGENDIAN])
 
