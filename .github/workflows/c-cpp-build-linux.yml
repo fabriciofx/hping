@@ -18,15 +18,11 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update &&
-          sudo apt-get install -y build-essential pkg-config libpcap-dev \
-            tcl-dev &&
-          wget https://ftp.gnu.org/gnu/automake/automake-1.18.tar.gz &&
-          tar xvfz automake-1.18.tar.gz &&
-          cd automake-1.18 &&
-          ./configure &&
-          make &&
-          sudo make install
+          sudo apt-get install -y build-essential autoconf automake libtool \
+            pkg-config libpcap-dev tcl-dev &&
       - name: Configure and build
         run: |
-          ./configure
-          make
+          ./autogen.sh &&
+          ./configure &&
+          make &&
+          make dist
