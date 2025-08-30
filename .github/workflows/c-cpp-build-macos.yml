@@ -9,6 +9,8 @@ name: c-cpp-build-macos
   pull_request:
     branches:
       - master
+  # Enable manual execution in GitHub Actions
+  workflow_dispatch:
 jobs:
   c-cpp-build-macos:
     runs-on: [self-hosted, macos-15]
