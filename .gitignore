@@ -14,3 +14,10 @@ libtool
 src/.deps/
 src/libars.a
 stamp-h1
+.vscode/
+Makefile.in
+build/
+config.h.in
+configure
+m4/
+src/Makefile.in
