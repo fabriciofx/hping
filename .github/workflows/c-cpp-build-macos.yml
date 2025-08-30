@@ -18,7 +18,8 @@ jobs:
       - name: Install dependencies
         run: |
           brew update
-          brew install pkg-config tcl-tk libpcap
+          brew upgrade
+          brew install automake tcl-tk libpcap
       - name: Configure and build
         run: |
           ./configure
