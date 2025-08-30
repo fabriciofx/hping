@@ -15,7 +15,8 @@ clean() {
     rm -rf autom4te.cache aclocal.m4 Makefile.in src/Makefile.in m4/* \
         src/.deps src/.libs configure configure~ config.status \
         config.log libtool Makefile src/Makefile src/*.o src/.depend .depend \
-        config.h.in* config.h stamp-h1 src/hping3 src/libars.a build
+        config.h.in* config.h stamp-h1 src/hping3 src/libars.a build \
+        hping3-3.0.0-alpha-1*
     echo "done."
 }
 
@@ -23,7 +24,8 @@ dist() {
     echo -n "Cleaning temporary files... "
     rm -rf autom4te.cache aclocal.m4 src/.deps src/.libs config.status \
         config.log libtool Makefile src/Makefile src/*.o src/.depend .depend \
-        config.h.in~ configure~ config.h stamp-h1 src/hping3 src/libars.a
+        config.h.in~ configure~ config.h stamp-h1 src/hping3 src/libars.a \
+        hping3-3.0.0-alpha-1*
     echo "done."
 }
 
@@ -55,6 +57,5 @@ case "$1" in
     *)
         clean
         build
-        dist
         ;;
 esac
