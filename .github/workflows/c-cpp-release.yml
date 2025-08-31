@@ -111,3 +111,11 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Delete default source code archives
+        run: |
+          release_id=$(gh api repos/${{ github.repository }}/releases/tags/${{ steps.tag.outputs.tag }} --jq '.id')
+          for asset_id in $(gh api repos/${{ github.repository }}/releases/$release_id/assets --jq '.[] | select(.name | test("Source code")) | .id'); do
+            gh api repos/${{ github.repository }}/releases/assets/$asset_id -X DELETE
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
