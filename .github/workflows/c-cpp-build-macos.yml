@@ -11,11 +11,9 @@ name: c-cpp-build-macos
   pull_request:
     branches:
       - master
-  # Enable manual execution on GitHub Actions
-  workflow_dispatch:
 jobs:
   c-cpp-build-macos:
-    runs-on: [self-hosted, macos-15]
+    runs-on: macos-15
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
