@@ -6,10 +6,12 @@ name: c-cpp-build-macos
   push:
     branches:
       - master
+    tags:
+      - '*'
   pull_request:
     branches:
       - master
-  # Enable manual execution in GitHub Actions
+  # Enable manual execution on GitHub Actions
   workflow_dispatch:
 jobs:
   c-cpp-build-macos:

@@ -6,6 +6,8 @@ name: c-cpp-build-linux
   push:
     branches:
       - master
+    tags:
+      - '*'
   pull_request:
     branches:
       - master
