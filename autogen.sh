@@ -16,7 +16,7 @@ clean() {
         src/.deps src/.libs configure configure~ config.status \
         config.log libtool Makefile src/Makefile src/*.o src/.depend .depend \
         config.h.in* config.h stamp-h1 src/hping3 src/libars.a build \
-        hping3-3.0.0-alpha-1*
+        hping3*.tar.gz
     echo "done."
 }
 
@@ -25,7 +25,7 @@ dist() {
     rm -rf autom4te.cache aclocal.m4 src/.deps src/.libs config.status \
         config.log libtool Makefile src/Makefile src/*.o src/.depend .depend \
         config.h.in~ configure~ config.h stamp-h1 src/hping3 src/libars.a \
-        hping3-3.0.0-alpha-1*
+        hping3*.tar.gz
     echo "done."
 }
 

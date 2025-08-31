@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT([hping3], [3.0.0-alpha-1], [antirez@invece.org])
+AC_INIT([hping3], [3.0.0], [antirez@invece.org])
 AC_CONFIG_AUX_DIR([build])
 AC_CONFIG_MACRO_DIRS([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
