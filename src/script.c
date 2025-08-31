@@ -49,7 +49,7 @@ struct recv_handler {
 
 struct recv_handler recv_handlers[HPING_IFACE_MAX];
 
-static void panic(const char *msg) {
+static void hping_panic(const char *msg) {
     fprintf(stderr, "PANIC: %s\n", msg);
     exit(1);
 }
@@ -228,7 +228,7 @@ static int HpingSendRawCmd(ClientData clientData, Tcl_Interp *interp,
 	Tcl_Obj *result;
 	struct sockaddr_in sa;
 	char *pkt;
-	long pktlen;
+	int pktlen;
 	struct ars_iphdr *ip;
 
 	if (objc != 3) {
@@ -680,7 +680,7 @@ static int HpingChecksumCmd(ClientData clientData, Tcl_Interp *interp,
 	Tcl_Obj *result;
 	u_int16_t cksum;
 	char *data;
-	long len;
+	int len;
 
 	result = Tcl_GetObjResult(interp);
 
@@ -747,7 +747,7 @@ static int HpingEventCmd(ClientData clientData, Tcl_Interp *interp,
 	struct recv_handler *ra;
 	char *ifname;
 	Tcl_Obj *result;
-	long scriptlen;
+	int scriptlen;
 
 	result = Tcl_GetObjResult(interp);
 	if (objc != 3 && objc != 4) {
@@ -981,7 +981,7 @@ void Tcl_SetMpzObj(Tcl_Obj *objPtr, mpz_ptr val)
 
 	/* It's not a good idea to set a shared object... */
 	if (Tcl_IsShared(objPtr)) {
-		panic("Tcl_SetMpzObj called with shared object");
+		hping_panic("Tcl_SetMpzObj called with shared object");
 	}
 	/* Free the old object private data and invalidate the string
 	 * representation. */
@@ -994,7 +994,7 @@ void Tcl_SetMpzObj(Tcl_Obj *objPtr, mpz_ptr val)
 	mpzPtr = (mpz_ptr) ckalloc(sizeof(struct struct_sbnz));
 	mpz_init(mpzPtr);
 	if (val && mpz_set(mpzPtr, val) != SBN_OK) {
-		panic("Out of memory in Tcl_SetMpzObj");
+		hping_panic("Out of memory in Tcl_SetMpzObj");
 	}
 	/* Set it as object private data, and type */
 	objPtr->typePtr = &tclMpzType;
@@ -1047,7 +1047,7 @@ void DupMpzInternalRep(Tcl_Obj *srcPtr, Tcl_Obj *copyPtr)
 	mpz_init(mpzCopyPtr);
 	mpzSrcPtr = (mpz_ptr) srcPtr->internalRep.otherValuePtr;
 	if (mpz_set(mpzCopyPtr, mpzSrcPtr) != SBN_OK)
-		panic("Out of memory inside DupMpzInternalRep()");
+		hping_panic("Out of memory inside DupMpzInternalRep()");
 	copyPtr->internalRep.otherValuePtr = (void*) mpzCopyPtr;
 	copyPtr->typePtr = &tclMpzType;
 }
@@ -1256,7 +1256,7 @@ static int BigSrandObjCmd(ClientData clientData, Tcl_Interp *interp,
 		int objc, Tcl_Obj *const objv[])
 {
 	char *seed;
-	long len;
+	int len;
 
 	if (objc != 2) {
 		Tcl_WrongNumArgs(interp, 1, objv, "seed-string");
