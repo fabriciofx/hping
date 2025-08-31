@@ -5,11 +5,11 @@ name: c-cpp-build-macos
 'on':
   push:
     branches:
+      - main
       - master
-    tags:
-      - '*'
   pull_request:
     branches:
+      - main
       - master
 jobs:
   c-cpp-build-macos:
@@ -35,25 +35,11 @@ jobs:
           echo "name=$name" >> $GITHUB_OUTPUT
           version=$(grep AC_INIT configure.ac | sed -n 's/AC_INIT(\[[^]]*\], \[\([^]]*\)\], \[[^]]*\])/\1/p')
           echo "version=$version" >> $GITHUB_OUTPUT
-      - name: Create source package
-        run: |
-          make dist
-      - name: Create binary package
+      - name: Create macOS binary package
         run: |
           make binary-dist
-      - name: Prepare packages to distribution
+      - name: Prepare package to distribution
         run: |
           mkdir -p dist
-          mv "${{ steps.props.outputs.name }}-${{ steps.props.outputs.version }}.tar.gz" \
-            "dist/${{ steps.props.outputs.name }}-${{ steps.props.outputs.version }}-source.tar.gz"
           mv "${{ steps.props.outputs.name }}-${{ steps.props.outputs.version }}-bin.tar.gz" \
-            "dist/${{ steps.props.outputs.name }}-${{ steps.props.outputs.version }}-linux.tar.gz"
-      - name: Detect act
-        id: act
-        run: |
-          echo "running=${ACT:-false}" >> $GITHUB_OUTPUT
-      - name: Upload artifacts
-        if: ${{ steps.act.outputs.running != 'true' }}
-        uses: actions/upload-artifact@v4
-        with:
-          path: dist/*
+            "dist/${{ steps.props.outputs.name }}-${{ steps.props.outputs.version }}-macos.tar.gz"
