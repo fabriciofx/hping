@@ -19,22 +19,22 @@ AC_CANONICAL_HOST
 
 case "$host_os" in
   linux*)
-    AC_DEFINE([OSTYPE_LINUX], [], [Define Linux as the target OS type])
+    CFLAGS="$CFLAGS -DOSTYPE_LINUX"
     ;;
   darwin*)
-    AC_DEFINE([OSTYPE_DARWIN], [], [Define Darwin as the target OS type])
+    CFLAGS="$CFLAGS -DOSTYPE_DARWIN"
     ;;
   freebsd*)
-    AC_DEFINE([OSTYPE_FREEBSD], [], [Define FreeBSD as the target OS type])
+    CFLAGS="$CFLAGS -DOSTYPE_FREEBSD"
     ;;
   netbsd*)
-    AC_DEFINE([OSTYPE_NETBSD], [], [Define NetBSD as the target OS type])
+    CFLAGS="$CFLAGS -DOSTYPE_NETBSD"
     ;;
   openbsd*)
-    AC_DEFINE([OSTYPE_OPENBSD], [], [Define OpenBSD as the target OS type])
+    CFLAGS="$CFLAGS -DOSTYPE_OPENBSD"
     ;;
   bsdi*)
-    AC_DEFINE([OSTYPE_BSDI], [], [Define BSDI as the target OS type])
+    CFLAGS="$CFLAGS -DOSTYPE_BSDI"
     ;;
   *)
     os_type=UNKNOWN
