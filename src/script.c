@@ -228,7 +228,11 @@ static int HpingSendRawCmd(ClientData clientData, Tcl_Interp *interp,
 	Tcl_Obj *result;
 	struct sockaddr_in sa;
 	char *pkt;
+#if TCL_MAJOR_VERSION == 8
 	int pktlen;
+#else
+	long pktlen;
+#endif
 	struct ars_iphdr *ip;
 
 	if (objc != 3) {
@@ -680,7 +684,11 @@ static int HpingChecksumCmd(ClientData clientData, Tcl_Interp *interp,
 	Tcl_Obj *result;
 	u_int16_t cksum;
 	char *data;
+#if TCL_MAJOR_VERSION == 8
 	int len;
+#else
+	long len;
+#endif
 
 	result = Tcl_GetObjResult(interp);
 
@@ -747,7 +755,11 @@ static int HpingEventCmd(ClientData clientData, Tcl_Interp *interp,
 	struct recv_handler *ra;
 	char *ifname;
 	Tcl_Obj *result;
+#if TCL_MAJOR_VERSION == 8
 	int scriptlen;
+#else
+	long scriptlen;
+#endif
 
 	result = Tcl_GetObjResult(interp);
 	if (objc != 3 && objc != 4) {
@@ -1256,7 +1268,11 @@ static int BigSrandObjCmd(ClientData clientData, Tcl_Interp *interp,
 		int objc, Tcl_Obj *const objv[])
 {
 	char *seed;
+#if TCL_MAJOR_VERSION == 8
 	int len;
+#else
+	long len;
+#endif
 
 	if (objc != 2) {
 		Tcl_WrongNumArgs(interp, 1, objv, "seed-string");
