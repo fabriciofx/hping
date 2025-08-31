@@ -56,5 +56,4 @@ jobs:
         if: ${{ steps.act.outputs.running != 'true' }}
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
-          path: dist/*
+          path: dist/
