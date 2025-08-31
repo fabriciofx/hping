@@ -15,9 +15,6 @@ AC_SUBST([PACKAGE_VERSION])
 # To detect endianess
 AC_C_BIGENDIAN([WORDS_BIGENDIAN])
 
-# Create config.h
-AC_CONFIG_HEADERS([config.h])
-
 AC_CANONICAL_HOST
 
 case "$host_os" in
@@ -70,6 +67,16 @@ PKG_CHECK_MODULES([PCAP], [libpcap >= 1.0],
 PKG_CHECK_MODULES([TCL], [tcl >= 8.6],
   [AC_MSG_NOTICE([Found Tcl: $TCL_CFLAGS $TCL_LIBS])],
   [AC_MSG_ERROR([Tcl >= 8.6 not found. Install it via Homebrew.])])
+
+AC_CHECK_LIB([tcl], [Tcl_CreateInterp], [have_tcl=yes], [have_tcl=no])
+
+if test "$have_tcl" = yes; then
+  AC_DEFINE([USE_TCL], [1], [Define se Tcl has been found])
+  CFLAGS="$CFLAGS -DUSE_TCL"
+fi
+
+# Create config.h
+AC_CONFIG_HEADERS([config.h])
 
 AC_SUBST([PCAP_CFLAGS])
 AC_SUBST([PCAP_LIBS])
