@@ -43,6 +43,11 @@ jobs:
             "dist/${{ steps.props.outputs.name }}-${{ steps.props.outputs.version }}.tar.gz"
           mv "${{ steps.props.outputs.name }}-${{ steps.props.outputs.version }}-bin.tar.gz" \
             "dist/${{ steps.props.outputs.name }}-${{ steps.props.outputs.version }}-linux.tar.gz"
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-dist
+          path: dist/*.tar.gz
   c-cpp-build-macos:
     runs-on: macos-15
     steps:
@@ -74,10 +79,25 @@ jobs:
           mkdir -p dist
           mv "${{ steps.props.outputs.name }}-${{ steps.props.outputs.version }}-bin.tar.gz" \
             "dist/${{ steps.props.outputs.name }}-${{ steps.props.outputs.version }}-macos.tar.gz"
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-dist
+          path: dist/*.tar.gz
   c-cpp-release:
     runs-on: ubuntu-24.04
     needs: [c-cpp-build-linux, c-cpp-build-macos]
     steps:
+      - name: Download Linux artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-dist
+          path: dist
+      - name: Download macOS artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-dist
+          path: dist
       - name: Set release tag
         id: tag
         run: |
