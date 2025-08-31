@@ -23,25 +23,6 @@ case "$host_os" in
     ;;
   darwin*)
     CFLAGS="$CFLAGS -DOSTYPE_DARWIN"
-
-    AC_MSG_NOTICE([Detecting Homebrew pkg-config paths...])
-    case "`uname -m`" in
-      x86_64)
-        BREW_PKGCONFIG="/usr/local/lib/pkgconfig"
-        ;;
-      arm64)
-        BREW_PKGCONFIG="/opt/homebrew/opt/libpcap/lib/pkgconfig"
-        ;;
-      *)
-        BREW_PKGCONFIG=""
-        ;;
-    esac
-
-    if test -d "$BREW_PKGCONFIG"; then
-      PKG_CONFIG_PATH="$BREW_PKGCONFIG${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
-      export PKG_CONFIG_PATH
-      AC_MSG_NOTICE([PKG_CONFIG_PATH set to $PKG_CONFIG_PATH])
-    fi
     ;;
   freebsd*)
     CFLAGS="$CFLAGS -DOSTYPE_FREEBSD"
@@ -59,6 +40,39 @@ case "$host_os" in
     os_type=UNKNOWN
     ;;
 esac
+
+# Add dirs to PKG_CONFIG_PATH
+AC_DEFUN([ADD_TO_PKG_CONFIG_PATH],
+[
+  for dir in $@; do
+    if test -d "$dir"; then
+      case ":$PKG_CONFIG_PATH:" in
+        *":$dir:"*) ;;
+        *) PKG_CONFIG_PATH="$dir:$PKG_CONFIG_PATH" ;;
+      esac
+    fi
+  done
+  if test -n "$PKG_CONFIG_PATH"; then
+    export PKG_CONFIG_PATH
+  fi
+])
+
+# There are many homebrew (Linux and macOS)
+AC_MSG_NOTICE([Detecting Homebrew pkg-config paths...])
+case "`uname -m`" in
+  x86_64)
+    ADD_TO_PKG_CONFIG_PATH([/usr/local/lib/pkgconfig])
+    ;;
+  arm64)
+    ADD_TO_PKG_CONFIG_PATH([/opt/homebrew/opt/libpcap/lib/pkgconfig])
+    ADD_TO_PKG_CONFIG_PATH([/opt/homebrew/opt/tcl-tk/lib/pkgconfig])
+    ;;
+  *)
+    ;;
+esac
+
+# Show PKG_CONFIG_PATH variable
+AC_MSG_NOTICE([PKG_CONFIG_PATH=$PKG_CONFIG_PATH])
 
 PKG_CHECK_MODULES([PCAP], [libpcap >= 1.0],
   [AC_MSG_NOTICE([Found libpcap: $PCAP_CFLAGS $PCAP_LIBS])],
