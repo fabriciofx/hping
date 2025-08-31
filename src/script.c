@@ -23,7 +23,9 @@
 #include <sched.h>
 
 #include <sys/ioctl.h>
-#include <net/bpf.h>
+#if (!defined OSTYPE_LINUX) && (!defined __sun__)
+	#include <net/bpf.h>
+#endif
 #include <pcap.h>
 
 #include "release.h"
