@@ -24,16 +24,16 @@ jobs:
             pkg-config libpcap-dev tcl-dev
       - name: Configure and build
         run: |
-          ./autogen.sh
+          [ -x ./autogen.sh ] && ./autogen.sh
           ./configure
           make
       - name: Get properties from configure.ac
         id: props
         shell: bash
         run: |
-          name=$(grep AC_INIT configure.ac | sed -n 's/AC_INIT(\[\([^]]*\)\],.*/\1/p')
+          name=$(sed -n 's/AC_INIT(\[\([^]]*\)\],.*/\1/p' configure.ac)
           echo "name=$name" >> $GITHUB_OUTPUT
-          version=$(grep AC_INIT configure.ac | sed -n 's/AC_INIT(\[[^]]*\], \[\([^]]*\)\], \[[^]]*\])/\1/p')
+          version=$(sed -n 's/AC_INIT(\[[^]]*\], \[\([^]]*\)\], \[[^]]*\])/\1/p' configure.ac)
           echo "version=$version" >> $GITHUB_OUTPUT
       - name: Create source package
         run: |

@@ -21,19 +21,19 @@ jobs:
         run: |
           brew update
           brew upgrade
-          brew install autoconf automake libtool tcl-tk libpcap
+          brew install autoconf automake libtool libpcap tcl-tk
       - name: Configure and build
         run: |
-          ./autogen.sh
+          [ -x ./autogen.sh ] && ./autogen.sh
           ./configure
           make
       - name: Get properties from configure.ac
         id: props
         shell: bash
         run: |
-          name=$(grep AC_INIT configure.ac | sed -n 's/AC_INIT(\[\([^]]*\)\],.*/\1/p')
+          name=$(sed -n 's/AC_INIT(\[\([^]]*\)\],.*/\1/p' configure.ac)
           echo "name=$name" >> $GITHUB_OUTPUT
-          version=$(grep AC_INIT configure.ac | sed -n 's/AC_INIT(\[[^]]*\], \[\([^]]*\)\], \[[^]]*\])/\1/p')
+          version=$(sed -n 's/AC_INIT(\[[^]]*\], \[\([^]]*\)\], \[[^]]*\])/\1/p' configure.ac)
           echo "version=$version" >> $GITHUB_OUTPUT
       - name: Create macOS binary package
         run: |
