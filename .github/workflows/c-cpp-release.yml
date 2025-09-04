@@ -46,8 +46,8 @@ jobs:
           make binary-dist
       - name: Prepare packages to distribution
         env:
-          NAME: "${{ steps.props.outputs.name }}"
-          VERSION: "${{ steps.props.outputs.version }}"
+          NAME: ${{ steps.props.outputs.name }}
+          VERSION: ${{ steps.props.outputs.version }}
         run: |
           # Sanitize variables for security purposes
           safe_name="$(echo "${NAME}" | tr -cd '[:alnum:]._-' )"
@@ -64,8 +64,8 @@ jobs:
           [ -f "$bin" ] || { echo "File '${bin}' not found"; exit 1; }
 
           # Move files
-          mkdir -p "dist"
-          mv "${src}" "dist/"
+          mkdir -p dist
+          mv "${src}" dist/
           mv "${bin}" "dist/${safe_name}-${safe_version}-linux.tar.gz"
   c-cpp-macos-build:
     runs-on: macos-15
@@ -98,8 +98,8 @@ jobs:
           make binary-dist
       - name: Prepare package to distribution
         env:
-          NAME: "${{ steps.props.outputs.name }}"
-          VERSION: "${{ steps.props.outputs.version }}"
+          NAME: ${{ steps.props.outputs.name }}
+          VERSION: ${{ steps.props.outputs.version }}
         run: |
           # Sanitize variables for security purposes
           safe_name="$(echo "${NAME}" | tr -cd '[:alnum:]._-' )"
@@ -136,7 +136,7 @@ jobs:
         id: tag
         run: |
           # Detects which tag triggered the build
-          echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+          echo "tag=${GITHUB_REF##*/}" >> "${GITHUB_OUTPUT}"
       - name: Release artifacts
         # yamllint disable-line rule:line-length
         uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8
