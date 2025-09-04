@@ -39,9 +39,9 @@ jobs:
         # yamllint disable rule:line-length
         run: |
           name="$(sed -n 's/AC_INIT(\[\([^]]*\)\],.*/\1/p' configure.ac)"
-          echo "name=$name" >> $GITHUB_OUTPUT
+          echo "name=${name}" >> "${GITHUB_OUTPUT}"
           version="$(sed -n 's/AC_INIT(\[[^]]*\], \[\([^]]*\)\], \[[^]]*\])/\1/p' configure.ac)"
-          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
         # yamllint enable rule:line-length
       - name: Create source package
         run: |
@@ -51,8 +51,8 @@ jobs:
           make binary-dist
       - name: Prepare packages to distribution
         env:
-          NAME: ${{ steps.props.outputs.name }}
-          VERSION: ${{ steps.props.outputs.version }}
+          NAME: "${{ steps.props.outputs.name }}"
+          VERSION: "${{ steps.props.outputs.version }}"
         run: |
           # Sanitize variables for security purposes
           safe_name="$(echo "${NAME}" | tr -cd '[:alnum:]._-' )"
@@ -69,7 +69,7 @@ jobs:
           [ -f "$bin" ] || { echo "File '${bin}' not found"; exit 1; }
 
           # Move files
-          mkdir -p dist
+          mkdir -p "dist"
           mv "${src}" "dist/"
           mv "${bin}" "dist/${safe_name}-${safe_version}-linux.tar.gz"
   c-cpp-macos-build:
@@ -94,17 +94,17 @@ jobs:
         # yamllint disable rule:line-length
         run: |
           name="$(sed -n 's/AC_INIT(\[\([^]]*\)\],.*/\1/p' configure.ac)"
-          echo "name=$name" >> $GITHUB_OUTPUT
+          echo "name=${name}" >> "${GITHUB_OUTPUT}"
           version="$(sed -n 's/AC_INIT(\[[^]]*\], \[\([^]]*\)\], \[[^]]*\])/\1/p' configure.ac)"
-          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
         # yamllint enable rule:line-length
       - name: Create macOS binary package
         run: |
           make binary-dist
       - name: Prepare package to distribution
         env:
-          NAME: ${{ steps.props.outputs.name }}
-          VERSION: ${{ steps.props.outputs.version }}
+          NAME: "${{ steps.props.outputs.name }}"
+          VERSION: "${{ steps.props.outputs.version }}"
         run: |
           # Sanitize variables for security purposes
           safe_name="$(echo "${NAME}" | tr -cd '[:alnum:]._-' )"
@@ -119,7 +119,7 @@ jobs:
           [ -f "$bin" ] || { echo "File '${bin}' not found"; exit 1; }
 
           # Move file
-          mkdir -p dist
+          mkdir -p "dist"
           mv "${bin}" dist/"${safe_name}-${safe_version}-macos.tar.gz"
   c-cpp-windows-build:
     runs-on: windows-2022
@@ -142,9 +142,9 @@ jobs:
         # yamllint disable rule:line-length
         run: |
           name="$(sed -n 's/AC_INIT(\[\([^]]*\)\],.*/\1/p' configure.ac)"
-          echo "name=$name" >> $GITHUB_OUTPUT
+          echo "name=${name}" >> "${GITHUB_OUTPUT}"
           version="$(sed -n 's/AC_INIT(\[[^]]*\], \[\([^]]*\)\], \[[^]]*\])/\1/p' configure.ac)"
-          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
         # yamllint enable rule:line-length
       - name: Create source package
         run: |
@@ -154,15 +154,15 @@ jobs:
           make binary-dist
       - name: Prepare packages to distribution
         env:
-          NAME: ${{ steps.props.outputs.name }}
-          VERSION: ${{ steps.props.outputs.version }}
+          NAME: "${{ steps.props.outputs.name }}"
+          VERSION: "${{ steps.props.outputs.version }}"
         # yamllint disable rule:line-length
         run: |
-          md dist
+          md "dist"
           move "${NAME}-${VERSION}-bin.zip" "dist/${NAME}-${VERZION}-windows.zip"
         # yamllint enable rule:line-length
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
         with:
           name: windows-dist
-          path: dist/*.zip
+          path: "dist/*.zip"
