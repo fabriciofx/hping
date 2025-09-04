@@ -1,18 +1,23 @@
 # SPDX-FileCopyrightText: Copyright (C) 2025 Fabrício Barros Cabral
 # SPDX-License-Identifier: MIT
 ---
-name: c-cpp-release
+name: c-cpp-build
 'on':
   push:
-    tags:
-      - '[0-9]*.[0-9]*.[0-9]*'
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
 defaults:
   run:
     shell: bash -xeuo pipefail {0}
 permissions:
   contents: read
 jobs:
-  c-cpp-build-linux:
+  c-cpp-linux-build:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
@@ -67,12 +72,7 @@ jobs:
           mkdir -p dist
           mv "${src}" "dist/"
           mv "${bin}" "dist/${safe_name}-${safe_version}-linux.tar.gz"
-      - name: Upload Linux artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-dist
-          path: dist/*.tar.gz
-  c-cpp-build-macos:
+  c-cpp-macos-build:
     runs-on: macos-15
     steps:
       - name: Checkout code
@@ -121,38 +121,48 @@ jobs:
           # Move file
           mkdir -p dist
           mv "${bin}" dist/"${safe_name}-${safe_version}-macos.tar.gz"
-      - name: Upload macOS artifacts
+  c-cpp-windows-build:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Install dependencies
+        run: |
+          choco update
+          choco install -y make gcc pkg-config
+      - name: Configure and build
+        run: |
+          autogen.cmd
+          configure
+          make
+      - name: Get properties from configure.ac
+        id: props
+        # yamllint disable rule:line-length
+        run: |
+          name=$(sed -n 's/AC_INIT(\[\([^]]*\)\],.*/\1/p' configure.ac)
+          echo "name=$name" >> $GITHUB_OUTPUT
+          version=$(sed -n 's/AC_INIT(\[[^]]*\], \[\([^]]*\)\], \[[^]]*\])/\1/p' configure.ac)
+          echo "version=$version" >> $GITHUB_OUTPUT
+        # yamllint enable rule:line-length
+      - name: Create source package
+        run: |
+          make dist
+      - name: Create Windows binary package
+        run: |
+          make binary-dist
+      - name: Prepare packages to distribution
+        env:
+          NAME: ${{ steps.props.outputs.name }}
+          VERSION: ${{ steps.props.outputs.version }}
+        # yamllint disable rule:line-length
+        run: |
+          md dist
+          move "${NAME}-${VERSION}-bin.zip" "dist/${NAME}-${VERZION}-windows.zip"
+        # yamllint enable rule:line-length
+      - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: macos-dist
-          path: dist/*.tar.gz
-  c-cpp-release:
-    runs-on: ubuntu-24.04
-    needs: [c-cpp-build-linux, c-cpp-build-macos]
-    permissions:
-      contents: write
-    steps:
-      - name: Download Linux artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: linux-dist
-          path: dist
-      - name: Download macOS artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: macos-dist
-          path: dist
-      - name: Set release tag
-        id: tag
-        run: |
-          # Detects which tag triggered the build
-          echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
-      - name: Release artifacts
-        # yamllint disable-line rule:line-length
-        uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8
-        with:
-          tag_name: ${{ steps.tag.outputs.tag }}
-          files: dist/*.tar.gz
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: windows-dist
+          path: dist/*.zip
