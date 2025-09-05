@@ -1,6 +1,5 @@
 autoconf
 automake
 libtool
-pkgconf
 libpcap
 tcl-tk
