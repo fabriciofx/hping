@@ -40,8 +40,11 @@ jobs:
       - name: Configure and build
         run: |
           [ -x ./autogen.sh ] && ./autogen.sh
-          ./configure
-          make
+          [ -x ./configure ] && ./configure
+          [ -s Makefile ] && make || {
+            echo "I couldn't find an autogen.sh, configure, or Makefile."
+            echo "Please check your files."
+          }
       - name: Get properties from configure.ac
         id: props
         # yamllint disable rule:line-length
@@ -96,8 +99,11 @@ jobs:
       - name: Configure and build
         run: |
           [ -x ./autogen.sh ] && ./autogen.sh
-          ./configure
-          make
+          [ -x ./configure ] && ./configure
+          [ -s Makefile ] && make || {
+            echo "I couldn't find an autogen.sh, configure, or Makefile."
+            echo "Please check your files."
+          }
       - name: Get properties from configure.ac
         id: props
         # yamllint disable rule:line-length
@@ -131,7 +137,7 @@ jobs:
           mkdir -p dist
           mv "${bin}" dist/"${safe_name}-${safe_version}-macos.tar.gz"
   c-cpp-windows-build:
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -147,9 +153,12 @@ jobs:
         shell: cmd
       - name: Configure and build
         run: |
-          ./autogen.sh
-          ./configure
-          make
+          [ -x ./autogen.sh ] && ./autogen.sh
+          [ -x ./configure ] && ./configure
+          [ -s Makefile ] && make || {
+            echo "I couldn't find an autogen.sh, configure, or Makefile."
+            echo "Please check your files."
+          }
       - name: Get properties from configure.ac
         id: props
         # yamllint disable rule:line-length

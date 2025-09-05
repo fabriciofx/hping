@@ -29,8 +29,11 @@ jobs:
       - name: Configure and build
         run: |
           [ -x ./autogen.sh ] && ./autogen.sh
-          ./configure
-          make
+          [ -x ./configure ] && ./configure
+          [ -s Makefile ] && make || {
+            echo "I couldn't find an autogen.sh, configure, or Makefile."
+            echo "Please check your files."
+          }
       - name: Get properties from configure.ac
         id: props
         # yamllint disable rule:line-length
@@ -85,8 +88,11 @@ jobs:
       - name: Configure and build
         run: |
           [ -x ./autogen.sh ] && ./autogen.sh
-          ./configure
-          make
+          [ -x ./configure ] && ./configure
+          [ -s Makefile ] && make || {
+            echo "I couldn't find an autogen.sh, configure, or Makefile."
+            echo "Please check your files."
+          }
       - name: Get properties from configure.ac
         id: props
         # yamllint disable rule:line-length
@@ -126,12 +132,12 @@ jobs:
       contents: write
     steps:
       - name: Download Linux artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: linux-dist
           path: dist
       - name: Download macOS artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: macos-dist
           path: dist
