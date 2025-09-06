@@ -132,7 +132,7 @@ static int HpingResolveCmd(ClientData clientData, Tcl_Interp *interp,
             return TCL_ERROR;
         }
         ipaddr = Tcl_GetStringFromObj(objv[3], NULL);
-        if (inet_aton(ipaddr, &ina) == 0) {
+        if (inet_pton(AF_INET, ipaddr, &ina) == 0) {
             Tcl_SetStringObj(result, "Invalid IP address: ", -1);
             Tcl_AppendStringsToObj(result, ipaddr, NULL);
             return TCL_ERROR;

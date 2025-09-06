@@ -1,6 +1,6 @@
 /* Copyright (C) 2000,2001 Salvatore Sanfilippo <antirez@invece.org>
  * See the LICENSE file for more information.
- * 
+ *
  * TODO:
  * o Functions to add addresses and timestamps for some IP and TCP option
  * o IGMP support
@@ -572,7 +572,7 @@ int ars_compiler_ip(struct ars_packet *pkt, int layer)
         for (j = layer+1; j < ARS_MAX_LAYER; j++) {
             if (pkt->p_layer[j].l_type != ARS_TYPE_IPOPT)
                 break;
-            ipoptlen += pkt->p_layer[j].l_size; 
+            ipoptlen += pkt->p_layer[j].l_size;
         }
         ip->ihl += ipoptlen >> 2;
     }
@@ -975,7 +975,7 @@ int ars_resolve(struct ars_packet *pkt, u_int32_t *dest, char *hostname)
 {
     struct sockaddr_in sa;
 
-    if (inet_aton(hostname, &sa.sin_addr) == 0) {
+    if (inet_pton(AF_INET, hostname, &sa.sin_addr) == 0) {
         struct hostent *he;
         he = gethostbyname(hostname);
         if (he == NULL) {

@@ -171,7 +171,7 @@ void parse_route(unsigned char *route, unsigned int *route_len, char *str)
                     fail_parse_route();
                 }
                 str[j] = '\0';
-                if (inet_aton(str+i, &ip))
+                if (inet_pton(AF_INET, str+i, &ip))
                 {
                     memcpy(route+4*n, &ip.s_addr, 4);
                     n++;
@@ -242,7 +242,7 @@ int parse_options(int argc, char **argv)
                 opt_waitinusec = TRUE;
                 usec_delay.it_value.tv_sec =
                 usec_delay.it_interval.tv_sec = 0;
-                usec_delay.it_value.tv_usec = 
+                usec_delay.it_value.tv_usec =
                 usec_delay.it_interval.tv_usec =
                     atol(ago_optarg+1);
             }
@@ -501,7 +501,7 @@ int parse_options(int argc, char **argv)
             opt_waitinusec = TRUE;
             usec_delay.it_value.tv_sec =
             usec_delay.it_interval.tv_sec = 0;
-            usec_delay.it_value.tv_usec = 
+            usec_delay.it_value.tv_usec =
             usec_delay.it_interval.tv_usec = 100000;
             break;
         case OPT_FASTER:
@@ -509,7 +509,7 @@ int parse_options(int argc, char **argv)
             opt_waitinusec = TRUE;
             usec_delay.it_value.tv_sec =
             usec_delay.it_interval.tv_sec = 0;
-            usec_delay.it_value.tv_usec = 
+            usec_delay.it_value.tv_usec =
             usec_delay.it_interval.tv_usec = 1;
         case OPT_TR_KEEP_TTL:
             opt_tr_keep_ttl = TRUE;
@@ -684,7 +684,7 @@ int parse_options(int argc, char **argv)
         opt_waitinusec = TRUE;
         usec_delay.it_value.tv_sec =
         usec_delay.it_interval.tv_sec = 0;
-        usec_delay.it_value.tv_usec = 
+        usec_delay.it_value.tv_usec =
         usec_delay.it_interval.tv_usec = 0;
     }
 

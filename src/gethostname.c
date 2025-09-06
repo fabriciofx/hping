@@ -1,12 +1,12 @@
-/* 
- * $smu-mark$ 
- * $name: gethostname.c$ 
- * $author: Salvatore Sanfilippo <antirez@invece.org>$ 
- * $copyright: Copyright (C) 1999 by Salvatore Sanfilippo$ 
- * $license: This software is under GPL version 2 of license$ 
- * $date: Fri Nov  5 11:55:47 MET 1999$ 
- * $rev: 8$ 
- */ 
+/*
+ * $smu-mark$
+ * $name: gethostname.c$
+ * $author: Salvatore Sanfilippo <antirez@invece.org>$
+ * $copyright: Copyright (C) 1999 by Salvatore Sanfilippo$
+ * $license: This software is under GPL version 2 of license$
+ * $date: Fri Nov  5 11:55:47 MET 1999$
+ * $rev: 8$
+ */
 
 /* $Id: gethostname.c,v 1.2 2003/09/01 00:22:06 antirez Exp $ */
 
@@ -35,7 +35,7 @@ char *get_hostname(char* addr)
         return last_answerp;
 
     strncpy(lastreq, addr, 1024);
-    inet_aton(addr, &naddr);
+    inet_pton(AF_INET, addr, &naddr);
     he = gethostbyaddr((char*)&naddr, 4, AF_INET);
 
     if (he == NULL) {
@@ -48,4 +48,3 @@ char *get_hostname(char* addr)
 
     return answer;
 }
-
