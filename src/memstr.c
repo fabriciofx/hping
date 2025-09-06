@@ -15,13 +15,13 @@
 
 char *memstr(char *haystack, char *needle, int size)
 {
-	char *p;
-	char needlesize = strlen(needle);
+    char *p;
+    char needlesize = strlen(needle);
 
-	for (p = haystack; p <= (haystack-needlesize+size); p++)
-	{
-		if (memcmp(p, needle, needlesize) == 0)
-			return p; /* found */
-	}
-	return NULL;
+    for (p = haystack; p <= (haystack-needlesize+size); p++)
+    {
+        if (memcmp(p, needle, needlesize) == 0)
+            return p; /* found */
+    }
+    return NULL;
 }

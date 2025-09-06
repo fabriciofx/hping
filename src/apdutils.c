@@ -25,52 +25,52 @@
  * the packet, otherwise 1 is returned. If a given index pointer
  * is NULL, it is just not used. */
 int ars_d_firstfield_off(char *packet, char *layer, char *field,
-		int *field_start, int *value_start, int *value_end)
+        int *field_start, int *value_start, int *value_end)
 {
-	int layerlen = strlen(layer);
-	int fieldlen = strlen(field);
-	int pktlen = strlen(packet);
-	char *x = alloca(layerlen+3);
-	char *y = alloca(fieldlen+3);
-	char *p, *j, *w;
-	x[0] = '+';
-	memcpy(x+1, layer, layerlen);
-	x[layerlen+1] = '(';
-	x[layerlen+2] = '\0';
-	if (pktlen <= layerlen+1)
-		return 0;
-	if (memcmp(packet, x+1, layerlen+1) == 0) {
-		p = packet;
-	} else {
-		p = strstr(packet, x);
-		if (p == NULL)
-			return 0;
-		p++;
-	}
-	y[0] = ',';
-	memcpy(y+1, field, fieldlen);
-	y[fieldlen+1] = '=';
-	y[fieldlen+2] = '\0';
-	p += layerlen + 1;
-	pktlen -= p-packet;
-	if (pktlen <= fieldlen+1)
-		return 0;
-	if ((j = strchr(p, ')')) == NULL)
-		return 0;
-	if (memcmp(p, y+1, fieldlen+1)) {
-		p = strstr(p, y);
-		if (p == NULL || p >= j)
-			return 0;
-		p++;
-	}
-	if (field_start) *field_start = p-packet;
-	p += fieldlen + 1;
-	if (value_start) *value_start = p-packet;
-	w = strchr(p, ',');
-	if (w && w < j)
-		j = w;
-	if (value_end) *value_end = (j-packet)-1;
-	return 1;
+    int layerlen = strlen(layer);
+    int fieldlen = strlen(field);
+    int pktlen = strlen(packet);
+    char *x = alloca(layerlen+3);
+    char *y = alloca(fieldlen+3);
+    char *p, *j, *w;
+    x[0] = '+';
+    memcpy(x+1, layer, layerlen);
+    x[layerlen+1] = '(';
+    x[layerlen+2] = '\0';
+    if (pktlen <= layerlen+1)
+        return 0;
+    if (memcmp(packet, x+1, layerlen+1) == 0) {
+        p = packet;
+    } else {
+        p = strstr(packet, x);
+        if (p == NULL)
+            return 0;
+        p++;
+    }
+    y[0] = ',';
+    memcpy(y+1, field, fieldlen);
+    y[fieldlen+1] = '=';
+    y[fieldlen+2] = '\0';
+    p += layerlen + 1;
+    pktlen -= p-packet;
+    if (pktlen <= fieldlen+1)
+        return 0;
+    if ((j = strchr(p, ')')) == NULL)
+        return 0;
+    if (memcmp(p, y+1, fieldlen+1)) {
+        p = strstr(p, y);
+        if (p == NULL || p >= j)
+            return 0;
+        p++;
+    }
+    if (field_start) *field_start = p-packet;
+    p += fieldlen + 1;
+    if (value_start) *value_start = p-packet;
+    w = strchr(p, ',');
+    if (w && w < j)
+        j = w;
+    if (value_end) *value_end = (j-packet)-1;
+    return 1;
 }
 
 /* This function extends ars_d_firstfield_off(), allowing to specify
@@ -80,26 +80,26 @@ int ars_d_firstfield_off(char *packet, char *layer, char *field,
  * a quoted IP packet that can be accessed using a skip value of 1
  * (to skip the first IP layer). */
 int ars_d_field_off(char *packet, char *layer, char *field, int skip,
-		int *field_start, int *value_start, int *value_end)
+        int *field_start, int *value_start, int *value_end)
 {
-	char *p = packet;
-	int end, toadd;
+    char *p = packet;
+    int end, toadd;
 
-	/* Minimal overhead with a zero skip */
-	if (skip <= 0)
-		return ars_d_firstfield_off(packet, layer, field,
-				field_start, value_start, value_end);
-	do {
-		if (!ars_d_firstfield_off(p, layer, field,
-					field_start, value_start, &end))
-			return 0;
-		toadd = p-packet;
-		p += end;
-	} while(skip--);
-	if (value_end) *value_end = end + toadd;
-	if (field_start) *field_start += toadd;
-	if (value_start) *value_start += toadd;
-	return 1;
+    /* Minimal overhead with a zero skip */
+    if (skip <= 0)
+        return ars_d_firstfield_off(packet, layer, field,
+                field_start, value_start, value_end);
+    do {
+        if (!ars_d_firstfield_off(p, layer, field,
+                    field_start, value_start, &end))
+            return 0;
+        toadd = p-packet;
+        p += end;
+    } while(skip--);
+    if (value_end) *value_end = end + toadd;
+    if (field_start) *field_start += toadd;
+    if (value_start) *value_start += toadd;
+    return 1;
 }
 
 /* The function calls ars_d_field_off() in order to
@@ -108,17 +108,17 @@ int ars_d_field_off(char *packet, char *layer, char *field, int skip,
  * NULL is returned. */
 char *ars_d_field_get(char *packet, char *layer, char *field, int skip)
 {
-	int start, end, len;
-	char *x;
+    int start, end, len;
+    char *x;
 
-	if (!ars_d_field_off(packet, layer, field, skip, NULL, &start, &end))
-		return NULL;
-	len = end-start+1;
-	if ((x = malloc(len+1)) == NULL)
-		return NULL;
-	memcpy(x, packet+start, len);
-	x[len] = '\0';
-	return x;
+    if (!ars_d_field_off(packet, layer, field, skip, NULL, &start, &end))
+        return NULL;
+    len = end-start+1;
+    if ((x = malloc(len+1)) == NULL)
+        return NULL;
+    memcpy(x, packet+start, len);
+    x[len] = '\0';
+    return x;
 }
 
 #ifdef TESTMAIN
@@ -126,27 +126,27 @@ char packet[] = "ip(ihl=5,ver=4,tos=00,totlen=1340,id=43581,fragoff=0,mf=0,df=1,
 
 int main(int argc, char **argv)
 {
-	int i = 10000;
-	int field_start, value_start, value_end;
-	int skip;
+    int i = 10000;
+    int field_start, value_start, value_end;
+    int skip;
 
-	if (argc != 4)
-		exit(1);
-	skip = atoi(argv[3]);
-	if (ars_d_field_off(packet, argv[1], argv[2], skip,
-			&field_start, &value_start, &value_end))
-	{
-		int j;
-		printf("|");
-		for (j = field_start; j <= value_end; j++) {
-			printf("%c", packet[j]);
-		}
-		printf("|\n");
-	}
-	while(i--) {
-		ars_d_field_off(packet, argv[1], argv[2], skip,
-				NULL, NULL, NULL);
-	}
-	return 0;
+    if (argc != 4)
+        exit(1);
+    skip = atoi(argv[3]);
+    if (ars_d_field_off(packet, argv[1], argv[2], skip,
+            &field_start, &value_start, &value_end))
+    {
+        int j;
+        printf("|");
+        for (j = field_start; j <= value_end; j++) {
+            printf("%c", packet[j]);
+        }
+        printf("|\n");
+    }
+    while(i--) {
+        ars_d_field_off(packet, argv[1], argv[2], skip,
+                NULL, NULL, NULL);
+    }
+    return 0;
 }
 #endif

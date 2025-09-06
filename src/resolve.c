@@ -22,33 +22,33 @@
 /* On error -1 is returned, on success 0 */
 int resolve_addr(struct sockaddr * addr, char *hostname)
 {
-	struct  sockaddr_in *address;
-	struct  hostent     *host;
+    struct  sockaddr_in *address;
+    struct  hostent     *host;
 
-	address = (struct sockaddr_in *)addr;
+    address = (struct sockaddr_in *)addr;
 
-	memset(address, 0, sizeof(struct sockaddr_in));
-	address->sin_family = AF_INET;
-	address->sin_addr.s_addr = inet_addr(hostname);
+    memset(address, 0, sizeof(struct sockaddr_in));
+    address->sin_family = AF_INET;
+    address->sin_addr.s_addr = inet_addr(hostname);
 
-	if ( (int)address->sin_addr.s_addr == -1) {
-		host = gethostbyname(hostname);
-		if (host) {
-			memcpy(&address->sin_addr, host->h_addr,
-				host->h_length);
-			return 0;
-		} else {
-			return -1;
-		}
-	}
-	return 0;
+    if ( (int)address->sin_addr.s_addr == -1) {
+        host = gethostbyname(hostname);
+        if (host) {
+            memcpy(&address->sin_addr, host->h_addr,
+                host->h_length);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+    return 0;
 }
 
 /* Like resolve_addr but exit on error */
 void resolve(struct sockaddr *addr, char *hostname)
 {
-	if (resolve_addr(addr, hostname) == -1) {
-		fprintf(stderr, "Unable to resolve '%s'\n", hostname);
-		exit(1);
-	}
+    if (resolve_addr(addr, hostname) == -1) {
+        fprintf(stderr, "Unable to resolve '%s'\n", hostname);
+        exit(1);
+    }
 }

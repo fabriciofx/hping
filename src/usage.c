@@ -13,9 +13,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void	show_usage(void)
+void    show_usage(void)
 {
-	printf(
+    printf(
 "usage: hping host [options]\n"
 "  -h  --help      show this help\n"
 "  -v  --version   show version\n"
@@ -23,7 +23,7 @@ void	show_usage(void)
 "  -i  --interval  wait (uX for X microseconds, for example -i u1000)\n"
 "      --fast      alias for -i u10000 (10 packets for second)\n"
 "      --faster    alias for -i u1000 (100 packets for second)\n"
-"      --flood	   sent packets as fast as possible. Don't show replies.\n"
+"      --flood     sent packets as fast as possible. Don't show replies.\n"
 "  -n  --numeric   numeric output\n"
 "  -q  --quiet     quiet\n"
 "  -I  --interface interface name (otherwise default routing interface)\n"
@@ -104,16 +104,16 @@ void	show_usage(void)
 "  -T  --traceroute traceroute mode              (implies --bind and --ttl 1)\n"
 "  --tr-stop        Exit when receive the first not ICMP in traceroute mode\n"
 "  --tr-keep-ttl    Keep the source TTL fixed, useful to monitor just one hop\n"
-"  --tr-no-rtt	    Don't calculate/show RTT information in traceroute mode\n"
+"  --tr-no-rtt      Don't calculate/show RTT information in traceroute mode\n"
 "ARS packet description (new, unstable)\n"
 "  --apd-send       Send the packet described with APD (see docs/APD.txt)\n"
-	);
-	exit(0);
+    );
+    exit(0);
 };
 
 void tos_help(void)
 {
-	printf(
+    printf(
 "tos help:\n"
 "          TOS Name                Hex Value           Typical Uses\n"
 "\n"
@@ -121,13 +121,13 @@ void tos_help(void)
 "       Maximum Throughput            08               ftp-data\n"
 "       Maximum Reliability           04               snmp\n"
 "       Minimum Cost                  02               nntp\n"
-	);
-	exit(0);
+    );
+    exit(0);
 }
 
 void icmp_help(void)
 {
-	printf(
+    printf(
 "ICMP help:\n"
 " ICMP concerned packet options:\n"
 "  --icmp-ipver     set ip version               ( default 4 )\n"
@@ -140,17 +140,17 @@ void icmp_help(void)
 "  --icmp-srcport   set tcp/udp source port      ( default random )\n"
 "  --icmp-dstport   set tcp/udp destination port ( default random )\n"
 "  --icmp-cksum     set icmp checksum            ( default the right cksum)\n"
-	);
-	exit(0);
+    );
+    exit(0);
 }
 
 void route_help(void)
 {
     printf(
 "route help:\n"
-"	A route has the following format: [ptr:]IP1[/IP2[/IP3...]]\n"
-"	where ptr is the exact value of the pointer that will be used for the IP\n"
-"	option (be careful, no check is performed on this pointer), and defaults\n"
-"	to 8, or 4 if provided route is too short for 8;\n"
-"	and each IPx field is an IP address to include in the source route.\n");
+"   A route has the following format: [ptr:]IP1[/IP2[/IP3...]]\n"
+"   where ptr is the exact value of the pointer that will be used for the IP\n"
+"   option (be careful, no check is performed on this pointer), and defaults\n"
+"   to 8, or 4 if provided route is too short for 8;\n"
+"   and each IPx field is an IP address to include in the source route.\n");
 }

@@ -55,8 +55,8 @@ unsigned char ip_opt_build(char* ip_opt)
         }
     }
 
-	if (opt_rroute)
-	{
+    if (opt_rroute)
+    {
         if (optlen<=33)
         {
             ip_opt[optlen]=IPOPT_RR;
@@ -71,7 +71,7 @@ unsigned char ip_opt_build(char* ip_opt)
             printf("Warning: no room for record route, discarding option\n");
             opt_rroute=0;
         }
-	}
+    }
 
     if (optlen)
     {

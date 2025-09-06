@@ -18,12 +18,12 @@
 
 void show_version(void)
 {
-	printf("hping version %s (%s)\n", RELEASE_VERSION, RELEASE_DATE);
+    printf("hping version %s (%s)\n", RELEASE_VERSION, RELEASE_DATE);
 #ifdef USE_TCL
-	printf("This binary is TCL scripting capable\n");
+    printf("This binary is TCL scripting capable\n");
 #else
-	printf("NO TCL scripting support compiled in\n");
+    printf("NO TCL scripting support compiled in\n");
 #endif
-	exit(0);
+    exit(0);
 }
 

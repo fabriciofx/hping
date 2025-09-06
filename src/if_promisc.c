@@ -23,40 +23,40 @@
 
 int if_promisc_on(int s)
 {
-	struct ifreq ifr;
+    struct ifreq ifr;
 
-	strlcpy(ifr.ifr_name, ifname, IFNAMSIZ);
-	if ( ioctl(s, SIOCGIFFLAGS, &ifr) == -1) {
-		perror("[if_prommisc_on] ioctl(SIOCGIFFLAGS)");
-		return -1;
-	}
+    strlcpy(ifr.ifr_name, ifname, IFNAMSIZ);
+    if ( ioctl(s, SIOCGIFFLAGS, &ifr) == -1) {
+        perror("[if_prommisc_on] ioctl(SIOCGIFFLAGS)");
+        return -1;
+    }
 
-	if (!(ifr.ifr_flags & IFF_PROMISC)) {
-		ifr.ifr_flags |= IFF_PROMISC;
-		if ( ioctl(s, SIOCSIFFLAGS, &ifr) == -1) {
-			perror("[if_promisc_on] ioctl(SIOCSIFFLAGS)");
-			return -1;
-		}
-	}
-	return 0;
+    if (!(ifr.ifr_flags & IFF_PROMISC)) {
+        ifr.ifr_flags |= IFF_PROMISC;
+        if ( ioctl(s, SIOCSIFFLAGS, &ifr) == -1) {
+            perror("[if_promisc_on] ioctl(SIOCSIFFLAGS)");
+            return -1;
+        }
+    }
+    return 0;
 }
 
 int if_promisc_off(int s)
 {
-	struct ifreq ifr;
+    struct ifreq ifr;
 
-	strlcpy(ifr.ifr_name, ifname, IFNAMSIZ);
-	if ( ioctl(s, SIOCGIFFLAGS, &ifr) == -1) {
-		perror("[if_promisc_off] ioctl(SIOCGIFFLAGS)");
-		return -1;
-	}
+    strlcpy(ifr.ifr_name, ifname, IFNAMSIZ);
+    if ( ioctl(s, SIOCGIFFLAGS, &ifr) == -1) {
+        perror("[if_promisc_off] ioctl(SIOCGIFFLAGS)");
+        return -1;
+    }
 
-	if (ifr.ifr_flags & IFF_PROMISC) {
-		ifr.ifr_flags ^= IFF_PROMISC;
-		if ( ioctl(s, SIOCSIFFLAGS, &ifr) == -1) {
-			perror("[if_promisc_off] ioctl(SIOCSIFFLAGS)");
-			return -1;
-		}
-	}
-	return 0;
+    if (ifr.ifr_flags & IFF_PROMISC) {
+        ifr.ifr_flags ^= IFF_PROMISC;
+        if ( ioctl(s, SIOCSIFFLAGS, &ifr) == -1) {
+            perror("[if_promisc_off] ioctl(SIOCSIFFLAGS)");
+            return -1;
+        }
+    }
+    return 0;
 }

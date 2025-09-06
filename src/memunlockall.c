@@ -18,8 +18,8 @@ int memunlockall(void)
 /* #ifdef _POSIX_MEMLOCK */
 /* NJ: better to test _POSIX_MEMLOCK value */
 #if _POSIX_MEMLOCK == 1
-	return ( munlockall() );
+    return ( munlockall() );
 #endif
-	return(-1);
+    return(-1);
 }
 

@@ -18,8 +18,8 @@ int memlockall(void)
 /* #ifdef _POSIX_MEMLOCK */
 /* NJ: better to test _POSIX_MEMLOCK value */
 #if _POSIX_MEMLOCK == 1
-	return ( mlockall(MCL_CURRENT|MCL_FUTURE) );
+    return ( mlockall(MCL_CURRENT|MCL_FUTURE) );
 #endif
-	return (-1);
+    return (-1);
 }
 

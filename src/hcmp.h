@@ -10,17 +10,17 @@
 
 /* Hping Control Message Protocol */
 
-#define HCMP_RESTART		1
-#define HCMP_SOURCE_QUENCH	2
-#define HCMP_SOURCE_STIRUP	3
-#define HCMP_CHPROTO		4 /* still unused */
+#define HCMP_RESTART        1
+#define HCMP_SOURCE_QUENCH  2
+#define HCMP_SOURCE_STIRUP  3
+#define HCMP_CHPROTO        4 /* still unused */
 
 struct hcmphdr
 {
-	__u8	type;
-	union
-	{
-		__u16 seqnum;
-		__u32 usec;
-	} typedep;
+    __u8    type;
+    union
+    {
+        __u16 seqnum;
+        __u32 usec;
+    } typedep;
 };

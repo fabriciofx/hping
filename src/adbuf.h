@@ -12,20 +12,20 @@
 #include <sys/types.h>
 
 struct adbuf {
-	char *buf;
-	size_t size;	/* total buffer size */
-	size_t left;	/* unused buffer size */
-	/* the size of data stored is just size-left */
+    char *buf;
+    size_t size;    /* total buffer size */
+    size_t left;    /* unused buffer size */
+    /* the size of data stored is just size-left */
 };
 
-#define ADBUF_INCR	256	/* note that this MUST BE >= 1 */
-#define adbuf_used(b)	((b)->size - (b)->left)
-#define adbuf_ptr(b)	((b)->buf)
+#define ADBUF_INCR  256 /* note that this MUST BE >= 1 */
+#define adbuf_used(b)   ((b)->size - (b)->left)
+#define adbuf_ptr(b)    ((b)->buf)
 
 /* Rawly create an adbuf object. 's' is supposed to be some heap
  * memory already allocated, with some nul-term string inside */
 #define adbuf_from_heapstring(b,s) \
-	do { b->buf = s; b->left = 0; b->size = strlen(s); } while(0)
+    do { b->buf = s; b->left = 0; b->size = strlen(s); } while(0)
 
 int adbuf_init(struct adbuf *b);
 void adbuf_free(struct adbuf *b);

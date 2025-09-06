@@ -18,31 +18,31 @@
 
 int relativize_id(int seqnum, int *ip_id)
 {
-	int seq_diff, backup_id;
-	static int last_seq = 0, last_id = -1;
+    int seq_diff, backup_id;
+    static int last_seq = 0, last_id = -1;
 
-	backup_id = *ip_id;
+    backup_id = *ip_id;
 
-	if (last_id == -1) {
-		last_id = *ip_id;
-		last_seq = seqnum;
-	}
-	else
-	{
-		if ( (seq_diff=(seqnum-last_seq)) > 0)
-		{
-			if (last_id > *ip_id) /* rew */
-				*ip_id = ((65535-last_id)
-				    + *ip_id)/seq_diff;
-				else
-				*ip_id = (*ip_id-last_id)
-					/seq_diff;
-			last_id = backup_id;
-			last_seq = seqnum;
-			return TRUE;
-		} else {
-			out_of_sequence_pkt++;
-		}
-	}
-	return FALSE;
+    if (last_id == -1) {
+        last_id = *ip_id;
+        last_seq = seqnum;
+    }
+    else
+    {
+        if ( (seq_diff=(seqnum-last_seq)) > 0)
+        {
+            if (last_id > *ip_id) /* rew */
+                *ip_id = ((65535-last_id)
+                    + *ip_id)/seq_diff;
+                else
+                *ip_id = (*ip_id-last_id)
+                    /seq_diff;
+            last_id = backup_id;
+            last_seq = seqnum;
+            return TRUE;
+        } else {
+            out_of_sequence_pkt++;
+        }
+    }
+    return FALSE;
 }

@@ -17,13 +17,13 @@
 
 int open_sockraw()
 {
-	int s;
+    int s;
 
-	s = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
-	if (s == -1) {
-		perror("[open_sockraw] socket()");
-		return -1;
-	}
+    s = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
+    if (s == -1) {
+        perror("[open_sockraw] socket()");
+        return -1;
+    }
 
-	return s;
+    return s;
 }
