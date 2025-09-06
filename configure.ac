@@ -76,7 +76,7 @@ case "$host_os" in
       x86_64)
         ADD_TO_PKG_CONFIG_PATH([/usr/local/lib/pkgconfig])
         ;;
-      arm64)
+      aarch64)
         ADD_TO_PKG_CONFIG_PATH([/opt/homebrew/opt/libpcap/lib/pkgconfig])
         ADD_TO_PKG_CONFIG_PATH([/opt/homebrew/opt/tcl-tk/lib/pkgconfig])
         ;;
